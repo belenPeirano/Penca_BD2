@@ -1,1 +1,0 @@
-si me pinta pushear a main lo hago, veni a buscarme gila
