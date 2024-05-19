@@ -1,18 +1,20 @@
-const mysql = require('mysql');
-
+"use strict";
+const mysql = require('mysql2');
 const connection = mysql.createConnection({
-    host: 'localhost:3306',
+    host: 'localhost',
+    port: '3306',
     user: 'root',
     password: 'root',
-    database: 'pencabdii'
+    database: 'pencabdii',
+    multipleStatements: true
 });
-
 connection.connect((err) => {
     if (err) {
         console.log('Error connecting to Db');
+        console.error(err);
         return;
     }
     console.log('Connection established');
 });
-
 module.exports = connection;
+//# sourceMappingURL=db.conn.js.map
