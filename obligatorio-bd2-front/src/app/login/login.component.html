@@ -1,0 +1,26 @@
+<div class="login">
+    <mat-card class="login-card">
+        <mat-card-header class="d-flex justify-content-center align-items-center mb-2">
+            <mat-card-title>Iniciar Sesión</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form class="login-form">
+                <mat-form-field class="login-input">
+                    <mat-label>Email</mat-label>
+                    <input matInput placeholder="ejemplo@correo.com">
+                </mat-form-field>
+                <mat-form-field class="login-input">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput type="password" placeholder="Contraseña">
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <div class="d-flex justify-content-center">
+            <button mat-raised-button class="confirmar-btn" routerLink="/menu">Confirmar</button>
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <span>¿No tienes cuenta?</span>
+            <button mat-button routerLink="/register">Registrate</button>
+        </div>
+    </mat-card>
+</div>

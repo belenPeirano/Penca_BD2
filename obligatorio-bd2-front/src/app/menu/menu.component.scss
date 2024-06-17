@@ -1,0 +1,17 @@
+@import "../../styles";
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+}
+
+h1 {
+    color: $primary-color;
+}	
+
+.btn-menu {
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: fit-content;
+}
