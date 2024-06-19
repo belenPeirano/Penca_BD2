@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent } from './paginas-estudiante/menu/menu.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
