@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { MenuComponent } from './paginas-estudiante/menu/menu.component';
 import { CommonModule } from '@angular/common';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -26,5 +27,6 @@ export class AppComponent implements OnInit{
       }
     });
   }
+
 
 }
