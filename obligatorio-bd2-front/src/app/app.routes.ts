@@ -6,6 +6,7 @@ import { PartidosPasadosComponent } from './partidos-pasados/partidos-pasados.co
 import { TablaResultadosComponent } from './paginas-estudiante/tabla-resultados/tabla-resultados.component';
 import { PrediccionComponent } from './paginas-estudiante/prediccion/prediccion.component';
 import { PerfilComponent } from './paginas-estudiante/perfil/perfil.component';
+import { ReglamentoComponent } from './paginas-estudiante/reglamento/reglamento.component';
 
 export const routes: Routes = [
     {
@@ -31,5 +32,9 @@ export const routes: Routes = [
     },
     {
         path: 'perfil', component: PerfilComponent
+    },
+    {
+        path: 'reglamento', component: ReglamentoComponent
     }
+
 ];
