@@ -1,0 +1,105 @@
+<div class="container">
+    <mat-tab-group>
+        <mat-tab label="Partidos">
+            <div class="titulo">
+                <h1>Partidos Pasados</h1>
+            </div>
+                <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+                    <ng-container *ngFor="let partido of partidos">
+                        <mat-grid-tile>
+                            <mat-card appearance="outlined" class="partido">
+                                <mat-card-content>
+                                    <div class="d-flex justify-content-center">
+                                        <span class="pb-1">{{ partido.fecha }}</span>
+                                    </div>
+                                    <mat-divider></mat-divider>
+                                    <div class="d-flex justify-content-center p-2">
+                                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                        <span class="p-2 fw-bold">{{ partido.equipo_local }}</span>
+                                        <span class="p-2"> vs </span>
+                                        <span class="p-2 fw-bold">{{ partido.equipo_visitante }}</span>
+                                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button mat-raised-button class="prediccion"
+                                            [routerLink]="['/resultado', partido.id_partido]">Ingresar Resultado</button>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-grid-tile>
+                    </ng-container>
+                </mat-grid-list>
+            
+
+        </mat-tab>
+
+        <mat-tab label="Ingresar Partido">
+            <div>
+                <mat-card class="partido">
+                    <mat-card-header class="d-flex justify-content-center mb-2">
+                        <h1>Ingresar Partido</h1>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <form [formGroup]="partidoForm" (ngSubmit)="submitPartido()">
+                            <mat-form-field class="full-width">
+                                <mat-label>Fecha</mat-label>
+                                <input matInput type="date" formControlName="fecha" required>
+                                <mat-error
+                                    *ngIf="partidoForm.get('fecha')!.invalid && partidoForm.get('fecha')!.touched">
+                                    La fecha es requerida.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Lugar</mat-label>
+                                <input matInput formControlName="lugar" required>
+                                <mat-error
+                                    *ngIf="partidoForm.get('lugar')!.invalid && partidoForm.get('lugar')!.touched">
+                                    El lugar es requerido.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Equipo Local</mat-label>
+                                <mat-select formControlName="equipoLocal" required>
+                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo">{{ equipo
+                                        }}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="partidoForm.get('equipoLocal')!.invalid && partidoForm.get('equipoLocal')!.touched">
+                                    Debes seleccionar un equipo local.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Equipo Visitante</mat-label>
+                                <mat-select formControlName="equipoVisitante" required>
+                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo">{{ equipo
+                                        }}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="partidoForm.get('equipoVisitante')!.invalid && partidoForm.get('equipoVisitante')!.touched">
+                                    Debes seleccionar un equipo visitante.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Fase</mat-label>
+                                <mat-select formControlName="fase" required>
+                                    <mat-option *ngFor="let fase of fases" [value]="fase">{{ fase }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="partidoForm.get('fase')!.invalid && partidoForm.get('fase')!.touched">
+                                    Debes seleccionar una fase.
+                                </mat-error>
+                            </mat-form-field>
+                            <div class="d-flex justify-content-center">
+                                <button mat-raised-button class="btnConfirmar" type="submit"
+                                    [disabled]="partidoForm.invalid">Guardar</button>
+                            </div>
+                        </form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

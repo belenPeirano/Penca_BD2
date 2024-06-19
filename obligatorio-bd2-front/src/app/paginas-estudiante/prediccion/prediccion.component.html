@@ -1,0 +1,53 @@
+<div>
+  <mat-card class="prediccion-card">
+    <mat-card-header>
+      <button mat-icon-button (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="d-flex justify-content-center mb-2 w-100">
+        <h1>Ingresar Predicción</h1>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="submitPrediccion()" [formGroup]="prediccionForm" novalidate>
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Cuadro Ganador</mat-label>
+            <mat-select formControlName="equipoGanador" name="equipoGanador" required>
+              <mat-option [value]="partido!.equipo_local">{{ partido!.equipo_local }}</mat-option>
+              <mat-option [value]="partido!.equipo_visitante">{{ partido!.equipo_visitante }}</mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="prediccionForm.controls['equipoGanador'].invalid && prediccionForm.controls['equipoGanador'].touched">
+              Debes seleccionar un cuadro ganador.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Goles {{partido!.equipo_local}}</mat-label>
+            <input matInput type="number" formControlName="prediccionLocal" required>
+            <mat-error
+              *ngIf="prediccionForm.controls['prediccionLocal'].invalid && prediccionForm.controls['prediccionLocal'].touched">
+              Debes ingresar los goles del equipo local.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Goles {{partido!.equipo_visitante}}</mat-label>
+            <input matInput type="number" formControlName="prediccionVisitante" required>
+            <mat-error
+              *ngIf="prediccionForm.controls['prediccionVisitante'].invalid && prediccionForm.controls['prediccionVisitante'].touched">
+              Debes ingresar los goles del equipo visitante.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group d-flex justify-content-center">
+          <button mat-raised-button class="btnConfirmar" type="submit" [disabled]="prediccionForm.invalid">Guardar
+            Predicción</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

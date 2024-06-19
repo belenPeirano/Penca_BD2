@@ -1,0 +1,125 @@
+<div>
+    <div class="titulo">
+        <h1>Próximos Partidos</h1>
+    </div>
+
+    <div class="fase">
+        <h2 class="ps-2">Fase de Grupos</h2>
+    </div>
+    <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+        <ng-container *ngFor="let partido of partidos">
+            <ng-container *ngIf="partido.fase === 'GRUPOS'">
+                <mat-grid-tile>
+                    <mat-card appearance="outlined" class="partido">
+                        <mat-card-content>
+                            <div class="d-flex justify-content-center">
+                                <span class="pb-1">{{ partido.fecha }}</span>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="d-flex justify-content-center p-2">
+                                <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                <span class="p-2 fw-bold">{{ partido.equipo_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fw-bold">{{ partido.equipo_visitante }}</span>
+                                <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button mat-raised-button class="prediccion" [routerLink]="['/prediccion', partido.id_partido]">Ingresar Predicción</button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </ng-container>
+        </ng-container>
+    </mat-grid-list>
+
+    <div class="fase">
+        <h2 class="ps-2">Cuartos de Final</h2>
+    </div>
+    <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+        <ng-container *ngFor="let partido of partidos">
+            <ng-container *ngIf="partido.fase === 'CUARTOS'">
+                <mat-grid-tile>
+                    <mat-card appearance="outlined" class="partido">
+                        <mat-card-content>
+                            <div class="d-flex justify-content-center">
+                                <span class="pb-1">{{ partido.fecha }}</span>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="d-flex justify-content-center p-2">
+                                <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                <span class="p-2 fw-bold">{{ partido.equipo_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fw-bold">{{ partido.equipo_visitante }}</span>
+                                <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button mat-raised-button class="prediccion" [routerLink]="['/prediccion', partido.id_partido]">Ingresar Predicción</button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </ng-container>
+        </ng-container>
+    </mat-grid-list>
+
+    <div class="fase">
+        <h2 class="ps-2">Semifinales</h2>
+    </div>
+    <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+        <ng-container *ngFor="let partido of partidos">
+            <ng-container *ngIf="partido.fase === 'SEMIFINAL'">
+                <mat-grid-tile>
+                    <mat-card appearance="outlined" class="partido">
+                        <mat-card-content>
+                            <div class="d-flex justify-content-center">
+                                <span class="pb-1">{{ partido.fecha }}</span>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="d-flex justify-content-center p-2">
+                                <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                <span class="p-2 fw-bold">{{ partido.equipo_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fw-bold">{{ partido.equipo_visitante }}</span>
+                                <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button mat-raised-button class="prediccion" [routerLink]="['/prediccion', partido.id_partido]">Ingresar Predicción</button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </ng-container>
+        </ng-container>
+    </mat-grid-list>
+
+    <div class="fase">
+        <h2 class="ps-2">Final y 3/4°</h2>
+    </div>
+    <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+        <ng-container *ngFor="let partido of partidos">
+            <ng-container *ngIf="partido.fase === 'FINAL' || partido.fase === 'TERCER'">
+                <mat-grid-tile>
+                    <mat-card appearance="outlined" class="partido">
+                        <mat-card-content class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center">
+                                <span class="pb-1">{{ partido.fecha }}</span>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="d-flex justify-content-center p-2">
+                                <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                <span class="p-2 fw-bold">{{ partido.equipo_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fw-bold">{{ partido.equipo_visitante }}</span>
+                                <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button mat-raised-button class="prediccion" [routerLink]="['/prediccion', partido.id_partido]">Ingresar Predicción</button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </ng-container>
+        </ng-container>
+    </mat-grid-list>
+</div>

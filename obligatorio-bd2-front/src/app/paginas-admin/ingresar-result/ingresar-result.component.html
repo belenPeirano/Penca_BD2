@@ -1,0 +1,40 @@
+<div>
+    <mat-card class="prediccion-card">
+        <mat-card-header class="d-flex justify-content-center mb-2">
+            <button mat-icon-button (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="d-flex justify-content-center mb-2 w-100">
+                <h1>Ingresar Resultado</h1>
+              </div>
+        </mat-card-header>
+        <mat-card-content>
+            <form (ngSubmit)="submitResultado()" [formGroup]="resultadoForm" novalidate>
+                <div class="form-group">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Goles {{partido!.equipo_local}}</mat-label>
+                        <input matInput type="number" formControlName="resultadoLocal" required>
+                        <mat-error
+                            *ngIf="resultadoForm.controls['resultadoLocal'].invalid && resultadoForm.controls['resultadoLocal'].touched">
+                            Debes ingresar los goles del equipo local.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Goles {{partido!.equipo_visitante}}</mat-label>
+                        <input matInput type="number" formControlName="resultadoVisitante" required>
+                        <mat-error
+                            *ngIf="resultadoForm.controls['resultadoVisitante'].invalid && resultadoForm.controls['resultadoVisitante'].touched">
+                            Debes ingresar los goles del equipo visitante.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="form-group d-flex justify-content-center">
+                    <button mat-raised-button class="btnConfirmar" type="submit"
+                        [disabled]="resultadoForm.invalid">Guardar Resultado</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

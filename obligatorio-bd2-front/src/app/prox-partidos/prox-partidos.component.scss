@@ -1,0 +1,40 @@
+@import '../../styles';
+
+.fase {
+    width: 90%;
+    background-color: $primary-color;
+    color: #FFF;
+}
+
+.titulo {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.partido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #FFF;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.grid {
+    width: 90%;
+}
+
+.prediccion {
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+
+.bandera {
+    width: 24px;
+    height: auto;
+    margin-right: 8px;
+}

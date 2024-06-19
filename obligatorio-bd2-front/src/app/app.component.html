@@ -1,16 +1,6 @@
-<h1>Usuarios</h1>
-<table>
-  <tr>
-    <th>Nombre</th>
-    <th>Apellido</th>
-    <th>Edad</th>
-  </tr>
-  @if (usuarios) {
-  @for (usuario of usuarios; track $index) {
-  <tr>
-    <td>{{usuario.nombre}}</td>
-    <td>{{usuario.apellido}}</td>
-    <td>{{usuario.email}}</td>
-  </tr>
-  }
-  }
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <div class="col-2 p-0" *ngIf="showMenu"><app-menu></app-menu></div>
+        <div class="col p-0"><router-outlet></router-outlet></div>
+    </div>
+</div>

@@ -1,0 +1,166 @@
+<div>
+    <div class="titulo">
+        <h1>Partidos Pasados</h1>
+    </div>
+
+    <div class="fase">
+        <h2 class="ps-2">Fase de Grupos</h2>
+    </div>
+    <div class="grid">
+        <ng-container *ngFor="let partido of partidosPasados">
+            <ng-container *ngIf="partido.fase === 'GRUPOS'">
+                <div class="grid-item">
+                    <div class="d-flex justify-content-center">
+                        <span class="pb-1">{{ partido.fecha }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="d-flex justify-content-center p-2">
+                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_local }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_local }}</span>
+                        <span class="p-2"> vs </span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_visitante }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_visitante }}</span>
+                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                    </div>
+                    <ng-container *ngIf="getPrediccion(partido.id_partido)">
+                        <div class="prediccion">
+                            <div class="d-flex justify-content-center">
+                                <span class="fw-bold pb-1">Mi Predicción</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <span class="p-2 fs-6">{{ partido.equipo_local }}</span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_visitante
+                                    }}</span>
+                                <span class="p-2 fs-6">{{ partido.equipo_visitante }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="fase">
+        <h2 class="ps-2">Cuartos de Final</h2>
+    </div>
+    <div class="grid">
+        <ng-container *ngFor="let partido of partidosPasados">
+            <ng-container *ngIf="partido.fase === 'CUARTOS'">
+                <div class="grid-item">
+                    <div class="d-flex justify-content-center">
+                        <span class="pb-1">{{ partido.fecha }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="d-flex justify-content-center p-2">
+                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_local }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_local }}</span>
+                        <span class="p-2"> vs </span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_visitante }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_visitante }}</span>
+                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                    </div>
+                    <ng-container *ngIf="getPrediccion(partido.id_partido)">
+                        <div class="prediccion">
+                            <div class="d-flex justify-content-center">
+                                <span class="fw-bold pb-1">Mi Predicción</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <span class="p-2 fs-6">{{ partido.equipo_local }}</span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_visitante
+                                    }}</span>
+                                <span class="p-2 fs-6">{{ partido.equipo_visitante }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="fase">
+        <h2 class="ps-2">Semifinales</h2>
+    </div>
+    <div class="grid">
+        <ng-container *ngFor="let partido of partidosPasados">
+            <ng-container *ngIf="partido.fase === 'SEMIFINAL'">
+                <div class="grid-item">
+                    <div class="d-flex justify-content-center">
+                        <span class="pb-1">{{ partido.fecha }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="d-flex justify-content-center p-2">
+                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_local }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_local }}</span>
+                        <span class="p-2"> vs </span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_visitante }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_visitante }}</span>
+                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                    </div>
+                    <ng-container *ngIf="getPrediccion(partido.id_partido)">
+                        <div class="prediccion">
+                            <div class="d-flex justify-content-center">
+                                <span class="fw-bold pb-1">Mi Predicción</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <span class="p-2 fs-6">{{ partido.equipo_local }}</span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_visitante
+                                    }}</span>
+                                <span class="p-2 fs-6">{{ partido.equipo_visitante }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="fase">
+        <h2 class="ps-2">Final y 3/4°</h2>
+    </div>
+    <div class="grid">
+        <ng-container *ngFor="let partido of partidosPasados">
+            <ng-container *ngIf="partido.fase === 'FINAL' || partido.fase === 'TERCER'">
+                <div class="grid-item">
+                    <div class="d-flex justify-content-center">
+                        <span class="pb-1">{{ partido.fecha }}</span>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div class="d-flex justify-content-center p-2">
+                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_local }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_local }}</span>
+                        <span class="p-2"> vs </span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.result_visitante }}</span>
+                        <span class="p-2 fw-bold fs-6">{{ partido.equipo_visitante }}</span>
+                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                    </div>
+                    <ng-container *ngIf="getPrediccion(partido.id_partido)">
+                        <div class="prediccion">
+                            <div class="d-flex justify-content-center">
+                                <span class="fw-bold pb-1">Mi Predicción</span>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <span class="p-2 fs-6">{{ partido.equipo_local }}</span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_local }}</span>
+                                <span class="p-2"> vs </span>
+                                <span class="p-2 fs-6">{{ getPrediccion(partido.id_partido)?.result_visitante
+                                    }}</span>
+                                <span class="p-2 fs-6">{{ partido.equipo_visitante }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
+    </div>
+
+</div>
