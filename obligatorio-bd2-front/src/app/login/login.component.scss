@@ -1,0 +1,41 @@
+@import "../../styles";
+
+.login-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+  
+.login-input {
+    width: 100%;
+    color: #f7f7f7;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.confirmar-btn {
+    width: 70%;
+    background-color: $primary-color !important;
+    color: #fff !important;
+}
+
+.login {
+    height: 100%;
+    background-color: $primary-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    width: 50px;
+    height: auto;
+}

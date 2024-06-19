@@ -1,0 +1,72 @@
+<div>
+    <mat-card class="perfil-card">
+      <mat-card-header class="d-flex justify-content-center mb-2">
+        <h1>Perfil de Usuario</h1>
+      </mat-card-header>
+      <mat-card-content>
+        <form (ngSubmit)="submitPerfil()" [formGroup]="perfilForm" novalidate>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>CI</mat-label>
+              <input matInput formControlName="ci">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="nombre" required>
+              <mat-error *ngIf="perfilForm.get('nombre')!.invalid && perfilForm.get('nombre')!.touched">
+                Debes ingresar el nombre.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Apellido</mat-label>
+              <input matInput formControlName="apellido" required>
+              <mat-error *ngIf="perfilForm.get('apellido')!.invalid && perfilForm.get('apellido')!.touched">
+                Debes ingresar el apellido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" required>
+              <mat-error *ngIf="perfilForm.get('email')!.invalid && perfilForm.get('email')!.touched">
+                Debes ingresar un correo electrónico válido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Carrera</mat-label>
+              <input matInput formControlName="carrera">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Puntaje Total</mat-label>
+              <input matInput formControlName="puntaje_total">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Predicción Campeón</mat-label>
+              <input matInput formControlName="predic_campeon">
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <mat-form-field appearance="fill" class="full-width">
+              <mat-label>Predicción Subcampeón</mat-label>
+              <input matInput formControlName="predic_subcampeon">
+            </mat-form-field>
+          </div>
+          <div class="form-group d-flex justify-content-center align-items-center m-0">
+            <button mat-raised-button class="btnConfirmar m-0" type="submit" [disabled]="perfilForm.invalid">Guardar Cambios</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

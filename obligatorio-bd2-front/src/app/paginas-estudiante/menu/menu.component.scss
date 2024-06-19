@@ -1,0 +1,44 @@
+@import "../../../styles";
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+}
+
+h2 {
+    color: #eceaea;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: x-large;
+}	
+
+.btn-menu {
+    color: #eceaea;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: fit-content;
+}
+
+.contenedor {
+    position: relative;
+    background-color: $secondary-color;
+}
+
+.logout {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+        width: 200px;
+        height: auto;
+}
+
+mat-divider {
+    border-top-color: #eceaea;
+}

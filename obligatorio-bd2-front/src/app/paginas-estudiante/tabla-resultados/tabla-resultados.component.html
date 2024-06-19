@@ -1,0 +1,42 @@
+<div class="contenedor">
+
+    <div class="contenido">
+
+        <h1 class="titulo">Tabla de Resultados</h1>
+
+        <div class="tabla">
+            <table mat-table [dataSource]="estudiantes" class="rounded-1 mat-elevation-z8">
+                <ng-container matColumnDef="posicion">
+                    <th mat-header-cell *matHeaderCellDef> Posición </th>
+                    <td mat-cell *matCellDef="let element"> {{element.posicion}} </td>
+                </ng-container>
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+                <ng-container matColumnDef="puntos">
+                    <th mat-header-cell *matHeaderCellDef> Puntos </th>
+                    <td mat-cell *matCellDef="let element"> {{element.puntos}} </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        <div class="result-estudiante">
+            <mat-card appearance="outlined" class="result-card">
+                <mat-card-header>
+                    <div class="d-flex justify-content-center w-100 pb-3">
+                        <mat-card-title>Mi Posición</mat-card-title>
+                    </div>
+                </mat-card-header>
+                <mat-card-content>
+                    <div>
+                        <span>#10</span>
+                        <span>Belén Peirano</span>
+                        <span>50 puntos</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

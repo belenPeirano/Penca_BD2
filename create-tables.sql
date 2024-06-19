@@ -39,11 +39,21 @@ CREATE TABLE partido (
 id_partido int auto_increment NOT NULL,
 fecha datetime,
 lugar varchar(100),
+fase int NOT NULL,
 equipo_local int,
 equipo_visitante int,
+result_local int,
+result_visitante int,
 PRIMARY KEY(id_partido),
 CONSTRAINT FOREIGN KEY(equipo_local) REFERENCES equipo(id_equipo),
-CONSTRAINT FOREIGN KEY(equipo_visitante) REFERENCES equipo(id_equipo)
+CONSTRAINT FOREIGN KEY(equipo_visitante) REFERENCES equipo(id_equipo),
+CONSTRAINT FOREIGN KEY(fase) REFERENCES fase(id_fase)
+);
+
+CREATE TABLE fase (
+id_fase int auto_increment NOT NULL,
+nombre varchar(10) NOT NULL,
+PRIMARY KEY(id_fase)
 );
 
 CREATE TABLE prediccion (
