@@ -1,9 +1,9 @@
 export interface IPrediccion {
-    id: number;
-    partido: number;
-    prediccionLocal: number;
-    prediccionVisitante: number;
-    usuarioId: number;
+    id_prediccion: number;
+    id_partido: number;
+    result_local: number;
+    result_visitante: number;
+    ci_estudiante: number;
     puntaje: number;
-    equipoGanador: string;
+    equipo_ganador: string;
 }

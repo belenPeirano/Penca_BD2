@@ -35,7 +35,7 @@ export class PartidosPasadosComponent {
   //hay que cambiar esto a getPrediccionPorUsuario y no chequear acá el usuarioId
 
   getPrediccion(partidoId: number): IPrediccion | undefined{
-    return this.predicciones.find(p => p.partido === partidoId && p.usuarioId === 1);
+    return this.predicciones.find(p => p.id_partido === partidoId && p.ci_estudiante === 1);
 
   }
 

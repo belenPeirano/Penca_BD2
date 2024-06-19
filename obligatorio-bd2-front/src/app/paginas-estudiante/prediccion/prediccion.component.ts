@@ -10,11 +10,12 @@ import { CommonModule } from '@angular/common';
 import { IPartido } from '../../interfaces/IPartido';
 import { ApiService } from '../../services/api.service';
 import { IPrediccion } from '../../interfaces/IPrediccion';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-prediccion',
   standalone: true,
-  imports: [FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, CommonModule, ReactiveFormsModule, MatIconModule, MatButtonModule],
   templateUrl: './prediccion.component.html',
   styleUrl: './prediccion.component.scss'
 })
@@ -51,9 +52,9 @@ export class PrediccionComponent implements OnInit {
       if (prediccion) {
         this.prediccion = prediccion;
         this.prediccionForm.patchValue({
-          equipoGanador: prediccion.equipoGanador,
-          prediccionLocal: prediccion.prediccionLocal,
-          prediccionVisitante: prediccion.prediccionVisitante
+          equipoGanador: prediccion.equipo_ganador,
+          prediccionLocal: prediccion.result_local,
+          prediccionVisitante: prediccion.result_visitante
         });
       }
     });
@@ -80,5 +81,9 @@ export class PrediccionComponent implements OnInit {
     } else {
       console.error('Formulario inválido');
     }
+  }
+
+  goBack(): void {
+    window.history.back();
   }
 }

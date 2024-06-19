@@ -11,14 +11,14 @@ import { Iusuario } from '../interfaces/iusuario';
 export class ApiService {
 
   partidos: IPartido[] = [
-    {id: 1, local: 'Nacional', visitante: 'Peñarol', fecha: '2021-05-20 20:00', fase: 'GRUPOS', lugar: 'Estadio Centenario', resultado_local: 2, resultado_visitante: 1 },
-    { id: 2, local: 'Liverpool', visitante: 'Fénix', fecha: '2021-05-21 19:00', fase: 'GRUPOS', lugar: 'Estadio Campeón del Siglo', resultado_local: 3, resultado_visitante: 2 },
-    { id: 3, local: 'Cerro', visitante: 'Defensor', fecha: '2021-05-22 15:00', fase: 'GRUPOS', lugar: 'Estadio Luis Tróccoli', resultado_local: 1, resultado_visitante: 1 },
-    { id: 4, local: 'Wanderers', visitante: 'Plaza', fecha: '2021-05-23 17:00', fase: 'GRUPOS', lugar: 'Estadio Alfredo Victor Viera', resultado_local: 1, resultado_visitante: 2 },
-    { id: 5, local: 'River', visitante: 'Racing', fecha: '2021-05-24 21:00', fase: 'CUARTOS', lugar: 'Estadio Saroldi', resultado_local: 0, resultado_visitante: 3 },
-    { id: 6, local: 'Danubio', visitante: 'Rampla', fecha: '2021-05-25 19:00', fase: 'CUARTOS', lugar: 'Estadio Jardines del Hipódromo', resultado_local: 2, resultado_visitante: 2 },
-    { id: 7, local: 'Boston River', visitante: 'Cerro Largo', fecha: '2021-05-26 20:00', fase: 'CUARTOS', lugar: 'Estadio Parque Artigas', resultado_local: 1, resultado_visitante: 0 },
-    { id: 8, local: 'Progreso', visitante: 'Cerro', fecha: '2021-05-27 21:00', fase: 'SEMIFINAL', lugar: 'Estadio Abraham Paladino', resultado_local: 2, resultado_visitante: 1 }
+    {id_partido: 1, equipo_local: 'Uruguay', equipo_visitante: 'Argentina', fecha: '2021-05-20 20:00', fase: 'GRUPOS', lugar: 'Estadio Centenario', result_local: 2, result_visitante: 1 },
+    { id_partido: 2, equipo_local: 'Brasil', equipo_visitante: 'USA', fecha: '2021-05-21 19:00', fase: 'GRUPOS', lugar: 'Estadio Campeón del Siglo', result_local: 3, result_visitante: 2 },
+    { id_partido: 3, equipo_local: 'Argentina', equipo_visitante: 'Peru', fecha: '2021-05-22 15:00', fase: 'GRUPOS', lugar: 'Estadio Luis Tróccoli', result_local: 1, result_visitante: 1 },
+    { id_partido: 4, equipo_local: 'Uruguay', equipo_visitante: 'Brasil', fecha: '2021-05-23 17:00', fase: 'GRUPOS', lugar: 'Estadio Alfredo Victor Viera', result_local: 1, result_visitante: 2 },
+    { id_partido: 5, equipo_local: 'Chile', equipo_visitante: 'USA', fecha: '2021-05-24 21:00', fase: 'CUARTOS', lugar: 'Estadio Saroldi', result_local: 0, result_visitante: 3 },
+    { id_partido: 6, equipo_local: 'Argentina', equipo_visitante: 'Chile', fecha: '2021-05-25 19:00', fase: 'CUARTOS', lugar: 'Estadio Jardines del Hipódromo', result_local: 2, result_visitante: 2 },
+    { id_partido: 7, equipo_local: 'Peru', equipo_visitante: 'Uruguay', fecha: '2021-05-26 20:00', fase: 'CUARTOS', lugar: 'Estadio Parque Artigas', result_local: 1, result_visitante: 0 },
+    { id_partido: 8, equipo_local: 'USA', equipo_visitante: 'Brasil', fecha: '2021-05-27 21:00', fase: 'SEMIFINAL', lugar: 'Estadio Abraham Paladino', result_local: 2, result_visitante: 1 }
   ];
 
   constructor() { }
@@ -35,12 +35,12 @@ export class ApiService {
   }
 
   getPartido(id: number): Observable<IPartido | undefined> {
-    const partido = this.partidos.find(p => p.id === id);
+    const partido = this.partidos.find(p => p.id_partido === id);
     return of(partido);
   }
 
   getPrediccion(partidoId: number, usuarioId: number): Observable<IPrediccion | undefined> {
-    return of({id: 1, partido: partidoId, prediccionLocal: 2, prediccionVisitante: 1, usuarioId: usuarioId, puntaje: 10, equipoGanador: 'Nacional'});
+    return of({id_prediccion: 1, id_partido: partidoId, result_local: 2, result_visitante: 1, ci_estudiante: usuarioId, puntaje: 10, equipo_ganador: 'Nacional'});
   }
 
   getPartidosPasados(): Observable<IPartido[]> {
@@ -49,14 +49,14 @@ export class ApiService {
 
   getPredicciones(): Observable<IPrediccion[]> {
     return of([
-      {id: 1, partido: 1, prediccionLocal: 2, prediccionVisitante: 1, usuarioId: 1, puntaje: 10, equipoGanador: '1'},
-      {id: 2, partido: 2, prediccionLocal: 3, prediccionVisitante: 2, usuarioId: 1, puntaje: 10, equipoGanador: '1'},
-      {id: 3, partido: 3, prediccionLocal: 1, prediccionVisitante: 1, usuarioId: 1, puntaje: 5, equipoGanador: '0'},
-      {id: 4, partido: 8, prediccionLocal: 1, prediccionVisitante: 2, usuarioId: 1, puntaje: 0, equipoGanador: '2'},
-      {id: 5, partido: 5, prediccionLocal: 0, prediccionVisitante: 3, usuarioId: 1, puntaje: 0, equipoGanador: '2'},
-      {id: 6, partido: 6, prediccionLocal: 2, prediccionVisitante: 2, usuarioId: 1, puntaje: 5, equipoGanador: '0'},
-      {id: 7, partido: 7, prediccionLocal: 1, prediccionVisitante: 0, usuarioId: 1, puntaje: 10, equipoGanador: '1'}
-    ]);
+      {id_prediccion: 1, id_partido: 1, result_local: 2, result_visitante: 1, ci_estudiante: 1, puntaje: 10, equipo_ganador: '1'},
+      {id_prediccion: 2, id_partido: 2, result_local: 3, result_visitante: 2, ci_estudiante: 1, puntaje: 10, equipo_ganador: '1'},
+      {id_prediccion: 3, id_partido: 3, result_local: 1, result_visitante: 1, ci_estudiante: 1, puntaje: 5, equipo_ganador: '0'},
+      {id_prediccion: 4, id_partido: 8, result_local: 1, result_visitante: 2, ci_estudiante: 1, puntaje: 0, equipo_ganador: '2'},
+      {id_prediccion: 5, id_partido: 5, result_local: 0, result_visitante: 3, ci_estudiante: 1, puntaje: 0, equipo_ganador: '2'},
+      {id_prediccion: 6, id_partido: 6, result_local: 2, result_visitante: 2, ci_estudiante: 1, puntaje: 5, equipo_ganador: '0'},
+      {id_prediccion: 7, id_partido: 7, result_local: 1, result_visitante: 0, ci_estudiante: 1, puntaje: 10, equipo_ganador: '1'}
+    ])
   }
 
   getUsuario(id: number): Observable<Iusuario | undefined> {
