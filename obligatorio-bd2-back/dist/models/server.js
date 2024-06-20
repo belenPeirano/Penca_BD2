@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const db_conn_1 = __importDefault(require("../db/db.conn"));
 const cors_1 = __importDefault(require("cors"));
 const participante_routes_1 = __importDefault(require("../routes/participante.routes"));
+const partido_routes_1 = __importDefault(require("../routes/partido.routes"));
 class Server {
     constructor(port) {
         this.app = (0, express_1.default)();
@@ -33,6 +34,7 @@ class Server {
     }
     routes() {
         this.app.use('/participante', participante_routes_1.default);
+        this.app.use('/partido', partido_routes_1.default);
     }
     middlewares() {
         this.app.use(express_1.default.json());

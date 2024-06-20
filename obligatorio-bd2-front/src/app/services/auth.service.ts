@@ -1,0 +1,16 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  baseUrl = 'http://localhost:3000';
+  http = inject(HttpClient);
+
+  login(credentials: { email: string, psw: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/participante/login`, credentials);
+  }
+
+}

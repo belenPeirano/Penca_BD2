@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        if (event.url.includes('/login') || event.url.includes('/register')) {
+        if (event.url.includes('/login') || event.url.includes('/register') || event.url.includes('/admin')) {
           this.showMenu = false;
         } else {
           this.showMenu = true;
