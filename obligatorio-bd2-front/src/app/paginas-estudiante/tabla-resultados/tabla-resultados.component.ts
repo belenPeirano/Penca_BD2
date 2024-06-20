@@ -3,11 +3,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { ApiService } from '../../services/api.service';
 import { IEstudiante } from '../../interfaces/IEstudiante';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-tabla-resultados',
   standalone: true,
-  imports: [MatTableModule, MatCardModule],
+  imports: [MatTableModule, MatCardModule, HttpClientModule],
   templateUrl: './tabla-resultados.component.html',
   styleUrl: './tabla-resultados.component.scss'
 })
@@ -22,8 +23,7 @@ export class TablaResultadosComponent implements OnInit {
       next: (estudiantes) => {
         this.estudiantes = estudiantes;
       }
-    }
-    );
+    });
   }
 
 

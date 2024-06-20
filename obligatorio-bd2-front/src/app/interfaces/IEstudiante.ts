@@ -1,5 +1,8 @@
 export interface IEstudiante {
-    posicion: number;
     nombre: string;
-    puntos: number;
+    apellido: string;
+    email: string;
+    puntaje_total: number;
+    carrera: string;
+    posicion: number;
 }

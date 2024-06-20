@@ -1,14 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { IEstudiante } from '../interfaces/IEstudiante';
 import { IPartido } from '../interfaces/IPartido';
 import { IPrediccion } from '../interfaces/IPrediccion';
 import { Iusuario } from '../interfaces/iusuario';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+
+  baseUrl = 'http://localhost:3000';
+  http = inject(HttpClient);
 
   partidos: IPartido[] = [
     {id_partido: 1, equipo_local: 'Uruguay', equipo_visitante: 'Argentina', fecha: '2021-05-20 20:00', fase: 'GRUPOS', lugar: 'Estadio Centenario', result_local: 2, result_visitante: 1 },
@@ -24,14 +28,7 @@ export class ApiService {
   constructor() { }
 
   getEstudiantes(): Observable<IEstudiante[]> {
-    return of([
-      {posicion: 1, nombre: 'Maria Gomez', puntos: 100},
-      {posicion: 2, nombre: 'Juan Perez', puntos: 90},
-      {posicion: 3, nombre: 'Luciana Alonso', puntos: 80},
-      {posicion: 4, nombre: 'Pierina Lugarte', puntos: 70},
-      {posicion: 5, nombre: 'Federico Gutierrez', puntos: 60},
-      {posicion: 6, nombre: 'Cumsi', puntos: 0}
-    ]);
+    return this.http.get<IEstudiante[]>(`${this.baseUrl}/participante`);
   }
 
   getPartido(id: number): Observable<IPartido | undefined> {
