@@ -1,4 +1,5 @@
 export interface IEstudiante {
+    ci: string;
     nombre: string;
     apellido: string;
     email: string;

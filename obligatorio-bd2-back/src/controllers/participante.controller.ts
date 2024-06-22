@@ -27,7 +27,7 @@ export const login = async (req: Request, res: Response) => {
         if (usuario.length === 0) {
             return res.status(400).json({message: 'Usuario o contraseña incorrectos'});
         }
-        const [participante] = await connection.promise().query('SELECT * FROM estudiante WHERE ci = ?', [usuario[0].ci]);
+        const [participante] = await connection.promise().query('SELECT e.*, u.rol FROM estudiante e LEFT JOIN usuario u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
         if (!bcryptjs.compareSync(psw, usuario[0].psw)) {
             return res.status(400).json({message: 'Usuario o contraseña incorrectos'});
         }
@@ -41,7 +41,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const getParticipantes = async (req: Request, res: Response) => {
     try {
-        const [participantes] = await connection.promise().query('SELECT u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
+        const [participantes] = await connection.promise().query('SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
         for (let i = 0; i < participantes.length; i++) {
             participantes[i].posicion = i + 1;
         }
@@ -77,14 +77,15 @@ export const getPrediccionesByPartidoByParticipante = async (req: Request, res: 
 
 export const getPointsByParticipante = async (req: Request, res: Response) => {
     try {
-        const {ci} = req.body;
+        const {ci} = req.query;
         const [puntos] = await connection.promise().query(`
             SELECT SUM(pr.puntaje) AS total_puntos
             FROM prediccion pr
             JOIN estudiante e ON pr.ci_estudiante = e.ci
             WHERE pr.ci_estudiante = ?
         `, [ci]);
-        res.json(puntos);
+        const total_puntos = puntos[0].total_puntos;
+        res.json({total_puntos});
     } catch (error) {
         console.error(error);
         res.status(500).json({message: 'Error al obtener puntos'});

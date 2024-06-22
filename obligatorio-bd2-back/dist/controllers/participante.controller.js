@@ -38,7 +38,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (usuario.length === 0) {
             return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
-        const [participante] = yield db_conn_1.default.promise().query('SELECT * FROM estudiante WHERE ci = ?', [usuario[0].ci]);
+        const [participante] = yield db_conn_1.default.promise().query('SELECT e.*, u.rol FROM estudiante e LEFT JOIN usuario u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
         if (!bcryptjs_1.default.compareSync(psw, usuario[0].psw)) {
             return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
@@ -91,14 +91,15 @@ const getPrediccionesByPartidoByParticipante = (req, res) => __awaiter(void 0, v
 exports.getPrediccionesByPartidoByParticipante = getPrediccionesByPartidoByParticipante;
 const getPointsByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { ci } = req.body;
+        const { ci } = req.query;
         const [puntos] = yield db_conn_1.default.promise().query(`
             SELECT SUM(pr.puntaje) AS total_puntos
             FROM prediccion pr
             JOIN estudiante e ON pr.ci_estudiante = e.ci
             WHERE pr.ci_estudiante = ?
         `, [ci]);
-        res.json(puntos);
+        const total_puntos = puntos[0].total_puntos;
+        res.json({ total_puntos });
     }
     catch (error) {
         console.error(error);

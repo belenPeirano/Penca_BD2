@@ -31,12 +31,13 @@ export class LoginComponent implements OnInit{
     this.auth.login(this.loginForm.value).subscribe({
       next: (res) => {
         localStorage.setItem('x-token', res.token);
-        this.router.navigate(['/proxPartidos']);
-        // if (res.rol === "ESTUDIANTE") {
-        //   this.router.navigate(['/proxPartidos']);
-        // } else {
-        //   this.router.navigate(['/admin']);
-        // }
+        localStorage.setItem('ci', res.participante.ci);
+        console.log(res);
+        if (res.participante.rol === "ESTUDIANTE") {
+          this.router.navigate(['/proxPartidos']);
+        } else {
+          this.router.navigate(['/admin']);
+        }
       },
       error: (err) => {
         this.snackBar.open('Usuario o contraseña incorrectos', 'Cerrar', {
