@@ -13,4 +13,8 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/participante/login`, credentials);
   }
 
+  register(participante: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/participante/register`, participante);
+  }
+
 }
