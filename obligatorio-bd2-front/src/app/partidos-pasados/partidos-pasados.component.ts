@@ -1,42 +1,44 @@
 import { Component } from '@angular/core';
 import { IPartido } from '../interfaces/IPartido';
-import { ApiService } from '../services/api.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import {MatDividerModule} from '@angular/material/divider';
 import { IPrediccion } from '../interfaces/IPrediccion';
+import { PartidoService } from '../services/partido.service';
 
 @Component({
   selector: 'app-partidos-pasados',
   standalone: true,
   imports: [CommonModule, MatDividerModule],
   templateUrl: './partidos-pasados.component.html',
-  styleUrl: './partidos-pasados.component.scss'
+  styleUrl: './partidos-pasados.component.scss',
+  providers: [DatePipe]
 })
 export class PartidosPasadosComponent {
 
   partidosPasados: IPartido[] = [];
+  prediccion: IPrediccion | undefined;
   predicciones: IPrediccion[] = [];
+  usuarioCi: string = localStorage.getItem('ci') || '';
 
-  constructor(private api: ApiService) { }
+  constructor(private partidoServ: PartidoService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    this.api.getPartidosPasados().subscribe({
+    this.partidoServ.partidosPasados().subscribe({
       next: (partidosPasados) => {
         this.partidosPasados = partidosPasados;
       }
     });
-    this.api.getPredicciones().subscribe({
+    this.partidoServ.getPredicciones(this.usuarioCi).subscribe({
       next: (predicciones) => {
         this.predicciones = predicciones;
       }
     });
   }
 
-  //hay que cambiar esto a getPrediccionPorUsuario y no chequear acá el usuarioId
-
   getPrediccion(partidoId: number): IPrediccion | undefined{
-    return this.predicciones.find(p => p.id_partido === partidoId && p.ci_estudiante === 1);
-
+    const prediccionesPartido: IPrediccion[] = this.predicciones.filter(prediccion => prediccion.id_partido === partidoId);
+    prediccionesPartido.sort((a, b) => b.id_prediccion - a.id_prediccion);
+    return prediccionesPartido[0];
   }
 
 }

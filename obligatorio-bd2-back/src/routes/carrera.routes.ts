@@ -4,6 +4,6 @@ import { getCarreras } from "../controllers/carrera.controller";
 
 const router = Router();
 
-router.get('/', [validateJWT], getCarreras)
+router.get('/', getCarreras)
 
 export default router;

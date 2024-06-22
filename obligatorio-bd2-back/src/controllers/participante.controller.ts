@@ -41,7 +41,14 @@ export const login = async (req: Request, res: Response) => {
 
 export const getParticipantes = async (req: Request, res: Response) => {
     try {
-        const [participantes] = await connection.promise().query('SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
+        const [participantes] = await connection.promise().query(`
+            SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera, eq1.nombre AS campeon, eq2.nombre AS subcampeon 
+                FROM usuario u 
+                JOIN estudiante e ON u.ci = e.ci 
+                JOIN carrera c ON e.id_carrera = c.id_carrera
+                LEFT JOIN equipo eq1 ON e.predic_campeon = eq1.id_equipo
+                LEFT JOIN equipo eq2 ON e.predic_subcampeon = eq2.id_equipo
+                ORDER BY e.puntaje_total DESC;`);
         for (let i = 0; i < participantes.length; i++) {
             participantes[i].posicion = i + 1;
         }
@@ -94,7 +101,7 @@ export const getPointsByParticipante = async (req: Request, res: Response) => {
 
 export const getPrediccionesByParticipante = async (req: Request, res: Response) => {
     try {
-        const {ci} = req.body;
+        const {ci} = req.params;
         const [predicciones] = await connection.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,

@@ -1,10 +1,13 @@
 export interface IPartido {
     id_partido: number;
-    equipo_local: string;
-    equipo_visitante: string;
     fecha: string;
-    fase: string;
     lugar: string;
+    id_fase: number;
+    id_local: number;
+    id_visitante: number;
+    fase: string;
+    local: string;
+    visitante: string;
     result_local: number;
     result_visitante: number;
 }

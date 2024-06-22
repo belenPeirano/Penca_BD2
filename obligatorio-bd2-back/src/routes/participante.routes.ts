@@ -10,7 +10,7 @@ router.get('/', [validateJWT], getParticipantes)
 router.get('/prediccion', [validateJWT], getPrediccionesByPartidoByParticipante)
 router.get('/points', [validateJWT], getPointsByParticipante)
 router.post('/prediccion', [validateJWT], createPrediccion)
-router.get('/predicciones', [validateJWT], getPrediccionesByParticipante)
+router.get('/predicciones/:ci', [validateJWT], getPrediccionesByParticipante)
 
 
 

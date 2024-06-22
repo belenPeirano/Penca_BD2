@@ -68,6 +68,7 @@ exports.getParticipantes = getParticipantes;
 const getPrediccionesByPartidoByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_partido, ci } = req.body;
+        console.log(id_partido, ci);
         const [predicciones] = yield db_conn_1.default.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
@@ -109,7 +110,7 @@ const getPointsByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.getPointsByParticipante = getPointsByParticipante;
 const getPrediccionesByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { ci } = req.params;
+        const { ci } = req.body;
         const [predicciones] = yield db_conn_1.default.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
@@ -133,8 +134,8 @@ const getPrediccionesByParticipante = (req, res) => __awaiter(void 0, void 0, vo
 exports.getPrediccionesByParticipante = getPrediccionesByParticipante;
 const createPrediccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante } = req.body;
-        const [prediccion] = yield db_conn_1.default.promise().query('INSERT INTO prediccion (ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante) VALUES (?, ?, ?, ?, ?)', [ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante]);
+        const { id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje } = req.body;
+        const [prediccion] = yield db_conn_1.default.promise().query('INSERT INTO prediccion (id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje) VALUES (?, ?, ?, ?, ?, ?)', [id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje]);
         res.json({ message: 'Prediccion creada' });
     }
     catch (error) {

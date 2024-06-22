@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PartidoService } from '../../services/partido.service';
 
 @Component({
   selector: 'app-pagina-admin',
@@ -35,7 +36,7 @@ export class PaginaAdminComponent implements OnInit{
   equipos = ['Equipo A', 'Equipo B', 'Equipo C']; // Lista de equipos
   fases = ['Fase 1', 'Fase 2', 'Fase 3']; // Lista de fases
 
-  constructor(private api: ApiService, private router: Router, private fb: FormBuilder) {
+  constructor(private api: ApiService, private router: Router, private fb: FormBuilder, private partidoServ: PartidoService) {
     this.partidoForm = this.fb.group({
       fecha: ['', Validators.required],
       lugar: ['', Validators.required],
@@ -46,7 +47,7 @@ export class PaginaAdminComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.api.getPartidosPasados().subscribe({
+    this.partidoServ.partidosPasados().subscribe({
       next: (partidos) => {
         this.partidos = partidos;
       }
@@ -54,14 +55,14 @@ export class PaginaAdminComponent implements OnInit{
   }
 
   getPartido(id: number): void {
-    this.api.getPartido(id).subscribe({
-      next: (partido) => {
-        this.partido = partido;
-      },
-      error: (error) => {
-        console.error('Error al obtener el partido:', error);
-      }
-    });
+    // this.api.getPartido(id).subscribe({
+    //   next: (partido) => {
+    //     this.partido = partido;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error al obtener el partido:', error);
+    //   }
+    // });
   }
 
   submitPartido(): void {

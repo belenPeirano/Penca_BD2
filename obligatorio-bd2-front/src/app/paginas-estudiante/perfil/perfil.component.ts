@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class PerfilComponent implements OnInit{
   perfilForm!: FormGroup;
-  userId!: number;
+  usuarioCi: string = localStorage.getItem('ci') || '';
 
   constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {}
 
@@ -36,7 +36,7 @@ export class PerfilComponent implements OnInit{
   }
 
   getPerfil(): void {
-    this.api.getUsuario(this.userId).subscribe(usuario => {
+    this.api.getEstudiante(this.usuarioCi).subscribe(usuario => {
       if (usuario) {
         this.perfilForm.patchValue({
           ci: usuario.ci,
@@ -45,8 +45,8 @@ export class PerfilComponent implements OnInit{
           email: usuario.email,
           carrera: usuario.carrera,
           puntaje_total: usuario.puntaje_total,
-          predic_campeon: usuario.predic_campeon,
-          predic_subcampeon: usuario.predic_subcampeon
+          predic_campeon: usuario.campeon,
+          predic_subcampeon: usuario.subcampeon
         });
       }
     });

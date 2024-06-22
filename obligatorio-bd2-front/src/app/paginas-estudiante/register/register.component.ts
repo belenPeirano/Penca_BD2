@@ -10,6 +10,9 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { chequeoContraseñas } from '../../helpers/validador';
+import { ApiService } from '../../services/api.service';
+import { ICarrera } from '../../interfaces/icarrera';
+import { IEquipo } from '../../interfaces/iequipo';
 
 @Component({
   selector: 'app-register',
@@ -19,53 +22,12 @@ import { chequeoContraseñas } from '../../helpers/validador';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
-  carreras = [
-    'Ingeniería Civil',
-    'Ingeniería Informática',
-    'Medicina',
-    'Derecho',
-    'Psicología',
-    'Administración de Empresas',
-    'Arquitectura',
-    'Biología',
-    'Contabilidad',
-    'Comunicación Social',
-    'Diseño Gráfico',
-    'Economía',
-    'Educación',
-    'Historia',
-    'Marketing',
-    'Nutrición',
-    'Odontología',
-    'Química',
-    'Veterinaria',
-    'Turismo',
-    'Filosofía',
-    'Geografía',
-    'Matemáticas',
-    'Física',
-    'Arte y Diseño',
-    'Antropología',
-    'Sociología',
-    'Ciencias Políticas',
-    'Relaciones Internacionales'
-  ];
 
-  paises = [
-    'Argentina',
-    'Bolivia',
-    'Brasil',
-    'Chile',
-    'Colombia',
-    'Ecuador',
-    'Paraguay',
-    'Perú',
-    'Uruguay',
-    'Venezuela'
-  ];
+  paises: IEquipo[] = [];
   registerForm!: FormGroup;
+  carreras: ICarrera[] = [];
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private snackBar: MatSnackBar, private router: Router) { }
+  constructor(private fb: FormBuilder, private api: ApiService, private auth: AuthService, private snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -80,7 +42,16 @@ export class RegisterComponent implements OnInit {
       predic_subcampeon: new FormControl('', [Validators.required])
     }, { validators: chequeoContraseñas('psw', 'confirmPsw') }
     );
-
+    this.api.getCarreras().subscribe({
+      next: (carreras) => {
+        this.carreras = carreras;
+      }
+    });
+    this.api.getEquipos().subscribe({
+      next: (equipos) => {
+        this.paises = equipos;
+      }
+    });
   }
 
   register(): void {

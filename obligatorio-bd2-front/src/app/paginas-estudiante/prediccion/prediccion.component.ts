@@ -11,6 +11,7 @@ import { IPartido } from '../../interfaces/IPartido';
 import { ApiService } from '../../services/api.service';
 import { IPrediccion } from '../../interfaces/IPrediccion';
 import { MatIconModule } from '@angular/material/icon';
+import { PartidoService } from '../../services/partido.service';
 
 @Component({
   selector: 'app-prediccion',
@@ -23,18 +24,13 @@ export class PrediccionComponent implements OnInit {
 
   prediccion!: IPrediccion;
   prediccionForm!: FormGroup;
-  partido: IPartido | undefined;
+  partido!: IPartido;
   partidoId!: number;
+  ciUsuario: string = localStorage.getItem('ci') || '';
 
-  constructor(private api: ApiService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
+  constructor(private partidoServ: PartidoService, private api: ApiService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.prediccionForm = this.fb.group({
-      equipoGanador: new FormControl('', [Validators.required]),
-      prediccionLocal: new FormControl('', [Validators.required]),
-      prediccionVisitante: new FormControl('', [Validators.required])
-    });
-
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
@@ -45,45 +41,47 @@ export class PrediccionComponent implements OnInit {
         console.error('ID de partido no encontrado');
       }
     });
+    this.prediccionForm = this.fb.group({
+      id_partido: new FormControl(this.partidoId),
+      ci_estudiante: new FormControl(this.ciUsuario),
+      equipo_ganador: new FormControl('', [Validators.required]),
+      result_local: new FormControl('', [Validators.required]),
+      result_visitante: new FormControl('', [Validators.required]),
+      puntaje: new FormControl(0)
+    });
+
+    
   }
 
   getPrediccion(): void {
-    this.api.getPrediccion(this.partidoId, 1).subscribe(prediccion => {
+    this.partidoServ.getPrediccionPorPartido(this.ciUsuario, this.partidoId).subscribe(prediccion => {
       if (prediccion) {
         this.prediccion = prediccion;
         this.prediccionForm.patchValue({
-          equipoGanador: prediccion.equipo_ganador,
-          prediccionLocal: prediccion.result_local,
-          prediccionVisitante: prediccion.result_visitante
+          equipo_ganador: prediccion.equipo_ganador,
+          result_local: prediccion.result_local,
+          result_visitante: prediccion.result_visitante
         });
       }
     });
   }
 
   getPartido(id: number): void {
-    this.api.getPartido(id).subscribe({
-      next: (partido) => {
-        this.partido = partido;
-      },
-      error: (error) => {
-        console.error('Error al obtener el partido:', error);
-      }
+    this.partidoServ.getPartido(id).subscribe(partido => {
+      this.partido = partido;
     });
   }
 
-  submitPrediccion(): void {
-    if (this.prediccionForm.valid) {
-      const formValue = this.prediccionForm.value;
-      // this.api.setPrediccion(this.partidoId, formValue).subscribe(response => {
-      //   console.log('Predicción guardada', response);
-      // });
-      this.router.navigate(['/proxPartidos']);
-    } else {
-      console.error('Formulario inválido');
-    }
+  guardarPrediccion(): void {
+    this.partidoServ.guardarPrediccion(this.prediccionForm.value).subscribe(response => {
+      console.log('Predicción guardada', response);
+    });
+    this.router.navigate(['/proxPartidos']);
+
   }
 
-  goBack(): void {
-    window.history.back();
-  }
+
+goBack(): void {
+  window.history.back();
+}
 }
