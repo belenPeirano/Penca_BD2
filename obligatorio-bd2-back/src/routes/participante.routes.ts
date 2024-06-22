@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateJWT } from "../middlewares/jwt-validator";
-import { getParticipantes, getPointsByParticipante, getPrediccionesByPartidoByParticipante, login, register } from "../controllers/participante.controller";
+import { createPrediccion, getParticipantes, getPointsByParticipante, getPrediccionesByParticipante, getPrediccionesByPartidoByParticipante, login, register } from "../controllers/participante.controller";
 
 const router = Router();
 
@@ -9,6 +9,9 @@ router.post('/login', login)
 router.get('/', [validateJWT], getParticipantes)
 router.get('/prediccion', [validateJWT], getPrediccionesByPartidoByParticipante)
 router.get('/points', [validateJWT], getPointsByParticipante)
+router.post('/prediccion', [validateJWT], createPrediccion)
+router.get('/predicciones', [validateJWT], getPrediccionesByParticipante)
+
 
 
 export default router;

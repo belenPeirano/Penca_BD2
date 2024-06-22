@@ -3,6 +3,7 @@ import connection from '../db/db.conn';
 import cors from 'cors';
 import participanteRoutes from '../routes/participante.routes';
 import partidoRoutes from '../routes/partido.routes';
+import carreraRoutes from '../routes/carrera.routes';
 
 class Server {
     private app: express.Application;
@@ -36,6 +37,7 @@ class Server {
     routes() {
         this.app.use('/participante', participanteRoutes);
         this.app.use('/partido', partidoRoutes);
+        this.app.use('/carrera', carreraRoutes);
     }
 
     middlewares() {

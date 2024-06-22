@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPointsByParticipante = exports.getPrediccionesByPartidoByParticipante = exports.getParticipantes = exports.login = exports.register = void 0;
+exports.createPrediccion = exports.getPrediccionesByParticipante = exports.getPointsByParticipante = exports.getPrediccionesByPartidoByParticipante = exports.getParticipantes = exports.login = exports.register = void 0;
 const db_conn_1 = __importDefault(require("../db/db.conn"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = __importDefault(require("../helpers/jwt"));
@@ -53,7 +53,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const getParticipantes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const [participantes] = yield db_conn_1.default.promise().query('SELECT u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
+        const [participantes] = yield db_conn_1.default.promise().query('SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
         for (let i = 0; i < participantes.length; i++) {
             participantes[i].posicion = i + 1;
         }
@@ -107,4 +107,40 @@ const getPointsByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getPointsByParticipante = getPointsByParticipante;
+const getPrediccionesByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { ci } = req.params;
+        const [predicciones] = yield db_conn_1.default.promise().query(`
+            SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
+                   p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
+                   p.equipo_local AS id_local, e1.nombre AS local,
+                   p.equipo_visitante AS id_visitante, e2.nombre AS visitante
+            FROM prediccion pr
+            JOIN partido p ON pr.id_partido = p.id_partido
+            JOIN equipo e1 ON p.equipo_local = e1.id_equipo
+            JOIN equipo e2 ON p.equipo_visitante = e2.id_equipo
+            JOIN fase f ON p.fase = f.id_fase
+            WHERE pr.ci_estudiante = ?
+            ORDER BY p.fecha ASC;
+        `, [ci]);
+        res.json(predicciones);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener predicciones' });
+    }
+});
+exports.getPrediccionesByParticipante = getPrediccionesByParticipante;
+const createPrediccion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante } = req.body;
+        const [prediccion] = yield db_conn_1.default.promise().query('INSERT INTO prediccion (ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante) VALUES (?, ?, ?, ?, ?)', [ci_estudiante, id_partido, equipo_ganador, result_local, result_visitante]);
+        res.json({ message: 'Prediccion creada' });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al crear prediccion' });
+    }
+});
+exports.createPrediccion = createPrediccion;
 //# sourceMappingURL=participante.controller.js.map

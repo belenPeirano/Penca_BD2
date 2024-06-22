@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resolvePartido = exports.createPartido = exports.getPartidos = void 0;
+exports.getEquipos = exports.resolvePartido = exports.createPartido = exports.getPartidos = void 0;
 const db_conn_1 = __importDefault(require("../db/db.conn"));
 const getPartidos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,4 +49,15 @@ const resolvePartido = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.resolvePartido = resolvePartido;
+const getEquipos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const [equipos] = yield db_conn_1.default.promise().query('SELECT * FROM equipo;');
+        res.json(equipos);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener equipos' });
+    }
+});
+exports.getEquipos = getEquipos;
 //# sourceMappingURL=partido.controller.js.map
