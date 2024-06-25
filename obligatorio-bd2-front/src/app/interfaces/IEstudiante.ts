@@ -5,5 +5,7 @@ export interface IEstudiante {
     email: string;
     puntaje_total: number;
     carrera: string;
+    campeon: string;
+    subcampeon: string;
     posicion: number;
 }

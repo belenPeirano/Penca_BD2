@@ -7,7 +7,7 @@ const router = Router();
 router.get('/', [validateJWT], getPartidos)
 router.post('/', [validateJWT], createPartido)
 router.put('/', [validateJWT], resolvePartido)
-router.get('/equipos', [validateJWT], getEquipos)
+router.get('/equipos', getEquipos)
 
 
 export default router;

@@ -44,14 +44,14 @@ export class IngresarResultComponent {
   }
 
   getPartido(id: number): void {
-    this.api.getPartido(id).subscribe({
-      next: (partido) => {
-        this.partido = partido;
-      },
-      error: (error) => {
-        console.error('Error al obtener el partido:', error);
-      }
-    });
+    // this.api.getPartido(id).subscribe({
+    //   next: (partido) => {
+    //     this.partido = partido;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error al obtener el partido:', error);
+    //   }
+    // });
   }
 
   submitResultado(): void {

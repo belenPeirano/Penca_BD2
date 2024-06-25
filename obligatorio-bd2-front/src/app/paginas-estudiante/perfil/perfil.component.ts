@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-perfil',
@@ -16,9 +16,9 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class PerfilComponent implements OnInit{
   perfilForm!: FormGroup;
-  userId!: number;
+  usuarioCi: string = localStorage.getItem('ci') ?? '';
 
-  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {}
+  constructor(private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.perfilForm = this.fb.group({
@@ -36,7 +36,7 @@ export class PerfilComponent implements OnInit{
   }
 
   getPerfil(): void {
-    this.api.getUsuario(this.userId).subscribe(usuario => {
+    this.api.getEstudiante(this.usuarioCi).subscribe(usuario => {
       if (usuario) {
         this.perfilForm.patchValue({
           ci: usuario.ci,
@@ -45,24 +45,17 @@ export class PerfilComponent implements OnInit{
           email: usuario.email,
           carrera: usuario.carrera,
           puntaje_total: usuario.puntaje_total,
-          predic_campeon: usuario.predic_campeon,
-          predic_subcampeon: usuario.predic_subcampeon
+          predic_campeon: usuario.campeon,
+          predic_subcampeon: usuario.subcampeon
         });
       }
     });
   }
 
-  submitPerfil(): void {
-    if (this.perfilForm.valid) {
-      const formValue = this.perfilForm.getRawValue(); // getRawValue para obtener valores incluso de los campos deshabilitados
-      // this.api.updatePerfil(this.userId, formValue).subscribe(response => {
-      //   console.log('Perfil actualizado', response);
-      //   this.router.navigate(['/dashboard']);
-      // });
-      console.log('Perfil actualizado', formValue);
-    } else {
-      console.error('Formulario inválido');
-    }
+  guardarPerfil(): void {
+    this.api.actualizarPerfil(this.perfilForm.getRawValue()).subscribe(res => {
+      this.snackBar.open(res.message, 'Cerrar', { duration: 2000 });
+    });
   }
 
 }

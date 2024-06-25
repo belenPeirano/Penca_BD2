@@ -16,7 +16,7 @@ export class TablaResultadosComponent implements OnInit {
 
   estudiantes: IEstudiante[] = [];
   puntosUsuario: string = "";
-  ciUsuario: string = localStorage.getItem('ci') || '';
+  ciUsuario: string = localStorage.getItem('ci') ?? '';
   posicionUsuario: number = 0;
   nombreUsuario: string = "";
   apellidoUsuario: string = "";

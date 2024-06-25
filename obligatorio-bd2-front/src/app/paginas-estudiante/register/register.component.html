@@ -29,7 +29,7 @@
                     <mat-label>Carrera</mat-label>
                     <mat-select formControlName="id_carrera" required>
                         @for (carrera of carreras; track carrera) {
-                        <mat-option [value]="carrera">{{carrera}}</mat-option>
+                        <mat-option [value]="carrera.id_carrera">{{carrera.nombre}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -37,7 +37,7 @@
                     <mat-label>Predicción Campeón</mat-label>
                     <mat-select formControlName="predic_campeon" required>
                         @for (pais of paises; track pais) {
-                        <mat-option [value]="pais">{{pais}}</mat-option>
+                        <mat-option [value]="pais.id_equipo">{{pais.nombre}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -45,7 +45,7 @@
                     <mat-label>Predicción SubCampeón</mat-label>
                     <mat-select formControlName="predic_subcampeon" required>
                         @for (pais of paises; track pais) {
-                        <mat-option [value]="pais">{{pais}}</mat-option>
+                        <mat-option [value]="pais.id_equipo">{{pais.nombre}}</mat-option>
                         }
                     </mat-select>
                 </mat-form-field>

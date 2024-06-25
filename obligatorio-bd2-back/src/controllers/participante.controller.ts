@@ -6,56 +6,61 @@ import generateJWT from '../helpers/jwt';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const {ci, nombre, apellido, email, psw, id_carrera, predic_campeon, predic_subcampeon} = req.body;
+        const { ci, nombre, apellido, email, psw, id_carrera, predic_campeon, predic_subcampeon } = req.body;
         const salt = bcryptjs.genSaltSync(10);
         const pswHash = bcryptjs.hashSync(psw, salt);
-        const[usuario] = await connection.promise().query('INSERT INTO usuario (ci, nombre, apellido, email, psw) VALUES (?, ?, ?, ?, ?)', [ci, nombre, apellido, email, pswHash]);
+        const [usuario] = await connection.promise().query('INSERT INTO usuario (ci, nombre, apellido, email, psw) VALUES (?, ?, ?, ?, ?)', [ci, nombre, apellido, email, pswHash]);
         const [participante] = await connection.promise().query('INSERT INTO estudiante (ci, id_carrera, predic_campeon, predic_subcampeon) VALUES (?, ?, ?, ?)', [ci, id_carrera, predic_campeon, predic_subcampeon]);
-        res.json({message: 'Participante registrado'});
+        res.json({ message: 'Participante registrado' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al registrar participante'});
+        res.status(500).json({ message: 'Error al registrar participante' });
     }
-    
-
 }
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const {email, psw} = req.body;
+        const { email, psw } = req.body;
         const [usuario] = await connection.promise().query('SELECT * FROM usuario WHERE email = ?', [email]);
         if (usuario.length === 0) {
-            return res.status(400).json({message: 'Usuario o contraseña incorrectos'});
+            return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
-        const [participante] = await connection.promise().query('SELECT e.*, u.rol FROM estudiante e LEFT JOIN usuario u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
+        const [participante] = await connection.promise().query('SELECT e.rol, u.* FROM usuario e LEFT JOIN estudiante u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
         if (!bcryptjs.compareSync(psw, usuario[0].psw)) {
-            return res.status(400).json({message: 'Usuario o contraseña incorrectos'});
+            return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
         const token = await generateJWT(usuario[0].ci);
-        res.json({message: 'Login exitoso', participante: participante[0], token});
+        res.json({ message: 'Login exitoso', participante: participante[0], token });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al loguear participante'});
+        res.status(500).json({ message: 'Error al loguear participante' });
     }
 }
 
 export const getParticipantes = async (req: Request, res: Response) => {
     try {
-        const [participantes] = await connection.promise().query('SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
+        const [participantes] = await connection.promise().query(`
+            SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera, eq1.nombre AS campeon, eq2.nombre AS subcampeon 
+                FROM usuario u 
+                JOIN estudiante e ON u.ci = e.ci 
+                JOIN carrera c ON e.id_carrera = c.id_carrera
+                LEFT JOIN equipo eq1 ON e.predic_campeon = eq1.id_equipo
+                LEFT JOIN equipo eq2 ON e.predic_subcampeon = eq2.id_equipo
+                ORDER BY e.puntaje_total DESC;`);
         for (let i = 0; i < participantes.length; i++) {
             participantes[i].posicion = i + 1;
         }
         res.json(participantes);
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al obtener participantes'});
+        res.status(500).json({ message: 'Error al obtener participantes' });
     }
 }
 
-export const getPrediccionesByPartidoByParticipante = async (req: Request, res: Response) => {
+export const getPrediccionByPartidoByParticipante = async (req: Request, res: Response) => {
     try {
-        const {id_partido, ci} = req.body;
-        const [predicciones] = await connection.promise().query(`
+        const { ci, id_partido } = req.params;
+        const [prediccion] = await connection.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
                    p.equipo_local AS id_local, e1.nombre AS local,
@@ -68,16 +73,16 @@ export const getPrediccionesByPartidoByParticipante = async (req: Request, res: 
             WHERE pr.ci_estudiante = ? AND pr.id_partido = ?
             ORDER BY p.fecha ASC;
         `, [ci, id_partido]);
-        res.json(predicciones);
+        res.json(prediccion[0]);
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al obtener predicciones'});
+        res.status(500).json({ message: 'Error al obtener predicciones' });
     }
 }
 
 export const getPointsByParticipante = async (req: Request, res: Response) => {
     try {
-        const {ci} = req.query;
+        const { ci } = req.query;
         const [puntos] = await connection.promise().query(`
             SELECT SUM(pr.puntaje) AS total_puntos
             FROM prediccion pr
@@ -85,16 +90,16 @@ export const getPointsByParticipante = async (req: Request, res: Response) => {
             WHERE pr.ci_estudiante = ?
         `, [ci]);
         const total_puntos = puntos[0].total_puntos;
-        res.json({total_puntos});
+        res.json({ total_puntos });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al obtener puntos'});
+        res.status(500).json({ message: 'Error al obtener puntos' });
     }
 }
 
 export const getPrediccionesByParticipante = async (req: Request, res: Response) => {
     try {
-        const {ci} = req.body;
+        const { ci } = req.params;
         const [predicciones] = await connection.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
@@ -111,19 +116,48 @@ export const getPrediccionesByParticipante = async (req: Request, res: Response)
         res.json(predicciones);
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al obtener predicciones'});
+        res.status(500).json({ message: 'Error al obtener predicciones' });
     }
 }
 
 export const createPrediccion = async (req: Request, res: Response) => {
     try {
-        const {id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje} = req.body;
-        const [prediccion] = await connection.promise().query('INSERT INTO prediccion (id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje) VALUES (?, ?, ?, ?, ?, ?)',
-             [id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje]);
-        res.json({message: 'Prediccion creada'});
+        const { id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante } = req.body;
+        const [prediccion] = await connection.promise().query('INSERT INTO prediccion (id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje) VALUES (?, ?, ?, ?, ?, 0)',
+            [id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante]);
+        res.json({ message: 'Prediccion creada' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: 'Error al crear prediccion'});
+        res.status(500).json({ message: 'Error al crear prediccion' });
     }
 }
 
+export const actualizarParticipante = async (req: Request, res: Response) => {
+    try {
+        const { ci, nombre, apellido, email } = req.body;
+        await connection.promise().query(`
+            update usuario
+            set nombre = ?, apellido = ?, email = ?
+            where ci = ?;`
+            , [nombre, apellido, email, ci]);
+        res.json({ message: 'Participante actualizado' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al actualizar el participante' });
+    }
+}
+
+export const actualizarPrediccion = async (req: Request, res: Response) => {
+    try {
+        const { id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante } = req.body;
+        await connection.promise().query(`
+            update prediccion
+            set id_partido = ?, ci_estudiante = ?, equipo_ganador = ?, result_local = ?, result_visitante = ?, puntaje = 0
+            where ci_estudiante = ? AND id_partido = ?;
+            `, [id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, ci_estudiante, id_partido]);
+        res.json({ message: 'Predicción actualizada' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al actualizar la predicción' });
+    }
+}
