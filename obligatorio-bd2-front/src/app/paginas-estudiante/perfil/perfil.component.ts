@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { Router } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardHeader, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-perfil',
@@ -18,7 +18,7 @@ export class PerfilComponent implements OnInit{
   perfilForm!: FormGroup;
   usuarioCi: string = localStorage.getItem('ci') ?? '';
 
-  constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {}
+  constructor(private fb: FormBuilder, private api: ApiService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.perfilForm = this.fb.group({
@@ -52,17 +52,10 @@ export class PerfilComponent implements OnInit{
     });
   }
 
-  submitPerfil(): void {
-    if (this.perfilForm.valid) {
-      const formValue = this.perfilForm.getRawValue();
-      console.log('Formulario válido', formValue);
-      this.api.actualizarPerfil(formValue).subscribe(response => {
-        console.log('Perfil actualizado', response);
-        this.router.navigate(['/dashboard']);
-      });
-    } else {
-      console.error('Formulario inválido');
-    }
+  guardarPerfil(): void {
+    this.api.actualizarPerfil(this.perfilForm.getRawValue()).subscribe(res => {
+      this.snackBar.open(res.message, 'Cerrar', { duration: 2000 });
+    });
   }
 
 }

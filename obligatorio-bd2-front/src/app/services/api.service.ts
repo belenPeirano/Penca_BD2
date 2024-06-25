@@ -40,7 +40,7 @@ export class ApiService {
 
   actualizarPerfil(estudiante: any): Observable<{ message: string }> {
     console.log('Actualizando perfil', estudiante);
-    return this.http.put<{ message: string }>(`${this.baseUrl}/participante/actualizar`, { estudiante });
+    return this.http.put<{ message: string }>(`${this.baseUrl}/participante/actualizar`, estudiante);
   }
 
 }

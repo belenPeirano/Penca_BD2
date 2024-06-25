@@ -49,6 +49,7 @@ export class PartidoService {
   }
 
   actualizarPrediccion(prediccion: IPrediccion): Observable<IPrediccion> {
+    console.log('Actualizando prediccion', prediccion);
     return this.http.put<IPrediccion>(`${this.baseUrl}/participante/prediccion`, prediccion);
   }
 }

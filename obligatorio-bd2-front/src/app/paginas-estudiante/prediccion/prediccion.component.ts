@@ -73,13 +73,13 @@ export class PrediccionComponent implements OnInit {
   guardarPrediccion(): void {
     this.partidoServ.getPrediccionPorPartido(this.ciUsuario, this.partidoId).subscribe(prediccion => {
       if (prediccion) {
-        // this.partidoServ.actualizarPrediccion(this.prediccionForm.value).subscribe(response => {
-        //   console.log('Predicción actualizada', response);
+        this.partidoServ.actualizarPrediccion(this.prediccionForm.value).subscribe(response => {
+          console.log(response);
           this.snackBar.open('Predicción actualizada', 'Cerrar', {
             duration: 2000,
           });
           this.router.navigate(['/proxPartidos']);
-        // });
+        });
       } else {
         this.partidoServ.guardarPrediccion(this.prediccionForm.value).subscribe(response => {
           console.log('Predicción guardada', response);
@@ -90,7 +90,7 @@ export class PrediccionComponent implements OnInit {
         });
       }
     });
-  }	
+  }
 
   goBack(): void {
     window.history.back();
