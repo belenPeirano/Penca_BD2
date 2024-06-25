@@ -32,3 +32,13 @@ export const resolvePartido = async (req: Request, res: Response) => {
         res.status(500).json({message: 'Error al resolver partido'});
     }
 }
+
+export const getEquipos = async (req: Request, res: Response) => {
+    try {
+        const [equipos] = await connection.promise().query('SELECT * FROM equipo;');
+        res.json(equipos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Error al obtener equipos'});
+    }
+}

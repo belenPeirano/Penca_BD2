@@ -91,3 +91,39 @@ export const getPointsByParticipante = async (req: Request, res: Response) => {
         res.status(500).json({message: 'Error al obtener puntos'});
     }
 }
+
+export const getPrediccionesByParticipante = async (req: Request, res: Response) => {
+    try {
+        const {ci} = req.body;
+        const [predicciones] = await connection.promise().query(`
+            SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
+                   p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
+                   p.equipo_local AS id_local, e1.nombre AS local,
+                   p.equipo_visitante AS id_visitante, e2.nombre AS visitante
+            FROM prediccion pr
+            JOIN partido p ON pr.id_partido = p.id_partido
+            JOIN equipo e1 ON p.equipo_local = e1.id_equipo
+            JOIN equipo e2 ON p.equipo_visitante = e2.id_equipo
+            JOIN fase f ON p.fase = f.id_fase
+            WHERE pr.ci_estudiante = ?
+            ORDER BY p.fecha ASC;
+        `, [ci]);
+        res.json(predicciones);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Error al obtener predicciones'});
+    }
+}
+
+export const createPrediccion = async (req: Request, res: Response) => {
+    try {
+        const {id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje} = req.body;
+        const [prediccion] = await connection.promise().query('INSERT INTO prediccion (id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje) VALUES (?, ?, ?, ?, ?, ?)',
+             [id_partido, ci_estudiante, equipo_ganador, result_local, result_visitante, puntaje]);
+        res.json({message: 'Prediccion creada'});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Error al crear prediccion'});
+    }
+}
+

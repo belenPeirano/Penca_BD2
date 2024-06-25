@@ -1,10 +1,8 @@
-export interface Iusuario {
-    ci: string;
+export interface IUsuario {
+    ci: number;
     nombre: string;
     apellido: string;
     email: string;
-    carrera: string;
-    puntaje_total: number;
-    predic_campeon: string;
-    predic_subcampeon: string;
+    psw: string;
+    rol: string;
 }

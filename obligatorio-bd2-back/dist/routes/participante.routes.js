@@ -9,5 +9,7 @@ router.post('/login', participante_controller_1.login);
 router.get('/', [jwt_validator_1.validateJWT], participante_controller_1.getParticipantes);
 router.get('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByPartidoByParticipante);
 router.get('/points', [jwt_validator_1.validateJWT], participante_controller_1.getPointsByParticipante);
+router.get('/prediccion/:id', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByParticipante);
+router.post('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.createPrediccion);
 exports.default = router;
 //# sourceMappingURL=participante.routes.js.map
