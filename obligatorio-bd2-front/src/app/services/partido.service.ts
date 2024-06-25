@@ -41,16 +41,14 @@ export class PartidoService {
   }
 
   getPrediccionPorPartido(ci: string, partidoId: number): Observable<IPrediccion> {
-    return this.getPredicciones(ci).pipe(
-      map(predicciones => {
-        const prediccionesPartido: IPrediccion[] = predicciones.filter(prediccion => prediccion.id_partido === partidoId);
-        prediccionesPartido.sort((a, b) => b.id_prediccion - a.id_prediccion);
-        return prediccionesPartido[0];
-      })
-    );
+    return this.http.get<IPrediccion>(`${this.baseUrl}/participante/${ci}/prediccion/${partidoId}`);
   }
 
   guardarPrediccion(prediccion: IPrediccion): Observable<IPrediccion> {
     return this.http.post<IPrediccion>(`${this.baseUrl}/participante/prediccion`, prediccion);
+  }
+
+  actualizarPrediccion(prediccion: IPrediccion): Observable<IPrediccion> {
+    return this.http.put<IPrediccion>(`${this.baseUrl}/participante/prediccion`, prediccion);
   }
 }

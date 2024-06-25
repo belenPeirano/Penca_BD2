@@ -8,10 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { IPartido } from '../../interfaces/IPartido';
-import { ApiService } from '../../services/api.service';
 import { IPrediccion } from '../../interfaces/IPrediccion';
 import { MatIconModule } from '@angular/material/icon';
 import { PartidoService } from '../../services/partido.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-prediccion',
@@ -26,9 +26,9 @@ export class PrediccionComponent implements OnInit {
   prediccionForm!: FormGroup;
   partido!: IPartido;
   partidoId!: number;
-  ciUsuario: string = localStorage.getItem('ci') || '';
+  ciUsuario: string = localStorage.getItem('ci') ?? '';
 
-  constructor(private partidoServ: PartidoService, private api: ApiService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
+  constructor(private partidoServ: PartidoService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -49,8 +49,6 @@ export class PrediccionComponent implements OnInit {
       result_visitante: new FormControl('', [Validators.required]),
       puntaje: new FormControl(0)
     });
-
-    
   }
 
   getPrediccion(): void {
@@ -58,7 +56,7 @@ export class PrediccionComponent implements OnInit {
       if (prediccion) {
         this.prediccion = prediccion;
         this.prediccionForm.patchValue({
-          equipo_ganador: prediccion.equipo_ganador,
+          equipo_ganador: prediccion.id_equipo_ganador,
           result_local: prediccion.result_local,
           result_visitante: prediccion.result_visitante
         });
@@ -73,15 +71,28 @@ export class PrediccionComponent implements OnInit {
   }
 
   guardarPrediccion(): void {
-    this.partidoServ.guardarPrediccion(this.prediccionForm.value).subscribe(response => {
-      console.log('Predicción guardada', response);
+    this.partidoServ.getPrediccionPorPartido(this.ciUsuario, this.partidoId).subscribe(prediccion => {
+      if (prediccion) {
+        // this.partidoServ.actualizarPrediccion(this.prediccionForm.value).subscribe(response => {
+        //   console.log('Predicción actualizada', response);
+          this.snackBar.open('Predicción actualizada', 'Cerrar', {
+            duration: 2000,
+          });
+          this.router.navigate(['/proxPartidos']);
+        // });
+      } else {
+        this.partidoServ.guardarPrediccion(this.prediccionForm.value).subscribe(response => {
+          console.log('Predicción guardada', response);
+          this.snackBar.open('Predicción guardada', 'Cerrar', {
+            duration: 2000,
+          });
+          this.router.navigate(['/proxPartidos']);
+        });
+      }
     });
-    this.router.navigate(['/proxPartidos']);
+  }	
 
+  goBack(): void {
+    window.history.back();
   }
-
-
-goBack(): void {
-  window.history.back();
-}
 }

@@ -18,7 +18,7 @@ export class PartidosPasadosComponent {
   partidosPasados: IPartido[] = [];
   prediccion: IPrediccion | undefined;
   predicciones: IPrediccion[] = [];
-  usuarioCi: string = localStorage.getItem('ci') || '';
+  usuarioCi: string = localStorage.getItem('ci') ?? '';
 
   constructor(private partidoServ: PartidoService, private datePipe: DatePipe) { }
 

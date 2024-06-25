@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class PerfilComponent implements OnInit{
   perfilForm!: FormGroup;
-  usuarioCi: string = localStorage.getItem('ci') || '';
+  usuarioCi: string = localStorage.getItem('ci') ?? '';
 
   constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {}
 
@@ -54,12 +54,12 @@ export class PerfilComponent implements OnInit{
 
   submitPerfil(): void {
     if (this.perfilForm.valid) {
-      const formValue = this.perfilForm.getRawValue(); // getRawValue para obtener valores incluso de los campos deshabilitados
-      // this.api.updatePerfil(this.userId, formValue).subscribe(response => {
-      //   console.log('Perfil actualizado', response);
-      //   this.router.navigate(['/dashboard']);
-      // });
-      console.log('Perfil actualizado', formValue);
+      const formValue = this.perfilForm.getRawValue();
+      console.log('Formulario válido', formValue);
+      this.api.actualizarPerfil(formValue).subscribe(response => {
+        console.log('Perfil actualizado', response);
+        this.router.navigate(['/dashboard']);
+      });
     } else {
       console.error('Formulario inválido');
     }

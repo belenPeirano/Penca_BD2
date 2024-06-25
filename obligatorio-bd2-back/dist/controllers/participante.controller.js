@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPrediccion = exports.getPrediccionesByParticipante = exports.getPointsByParticipante = exports.getPrediccionesByPartidoByParticipante = exports.getParticipantes = exports.login = exports.register = void 0;
+exports.actualizarParticipante = exports.createPrediccion = exports.getPrediccionesByParticipante = exports.getPointsByParticipante = exports.getPrediccionesByPartidoByParticipante = exports.getParticipantes = exports.login = exports.register = void 0;
 const db_conn_1 = __importDefault(require("../db/db.conn"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = __importDefault(require("../helpers/jwt"));
@@ -38,7 +38,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (usuario.length === 0) {
             return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
-        const [participante] = yield db_conn_1.default.promise().query('SELECT e.*, u.rol FROM estudiante e LEFT JOIN usuario u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
+        const [participante] = yield db_conn_1.default.promise().query('SELECT e.rol, u.* FROM usuario e LEFT JOIN estudiante u ON e.ci = u.ci WHERE e.ci = ?', [usuario[0].ci]);
         if (!bcryptjs_1.default.compareSync(psw, usuario[0].psw)) {
             return res.status(400).json({ message: 'Usuario o contraseña incorrectos' });
         }
@@ -53,7 +53,14 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const getParticipantes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const [participantes] = yield db_conn_1.default.promise().query('SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera FROM usuario u JOIN estudiante e ON u.ci = e.ci JOIN carrera c ON e.id_carrera = c.id_carrera ORDER BY e.puntaje_total DESC;');
+        const [participantes] = yield db_conn_1.default.promise().query(`
+            SELECT u.ci, u.nombre, u.apellido, u.email, e.puntaje_total, c.nombre AS carrera, eq1.nombre AS campeon, eq2.nombre AS subcampeon 
+                FROM usuario u 
+                JOIN estudiante e ON u.ci = e.ci 
+                JOIN carrera c ON e.id_carrera = c.id_carrera
+                LEFT JOIN equipo eq1 ON e.predic_campeon = eq1.id_equipo
+                LEFT JOIN equipo eq2 ON e.predic_subcampeon = eq2.id_equipo
+                ORDER BY e.puntaje_total DESC;`);
         for (let i = 0; i < participantes.length; i++) {
             participantes[i].posicion = i + 1;
         }
@@ -68,7 +75,6 @@ exports.getParticipantes = getParticipantes;
 const getPrediccionesByPartidoByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id_partido, ci } = req.body;
-        console.log(id_partido, ci);
         const [predicciones] = yield db_conn_1.default.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
@@ -110,7 +116,7 @@ const getPointsByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.getPointsByParticipante = getPointsByParticipante;
 const getPrediccionesByParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { ci } = req.body;
+        const { ci } = req.params;
         const [predicciones] = yield db_conn_1.default.promise().query(`
             SELECT pr.id_prediccion, pr.id_partido, pr.ci_estudiante, pr.equipo_ganador AS id_equipo_ganador, pr.result_local, pr.result_visitante, pr.puntaje,
                    p.fecha, p.lugar, p.fase AS id_fase, f.nombre AS fase,
@@ -144,4 +150,16 @@ const createPrediccion = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createPrediccion = createPrediccion;
+const actualizarParticipante = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id_partido, result_local, result_visitante } = req.body;
+        yield db_conn_1.default.promise().query('UPDATE partido SET result_local = ?, result_visitante = ? WHERE id_partido = ?;', [result_local, result_visitante, id_partido]);
+        res.json({ message: 'Partido resuelto' });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al resolver partido' });
+    }
+});
+exports.actualizarParticipante = actualizarParticipante;
 //# sourceMappingURL=participante.controller.js.map

@@ -10,6 +10,7 @@ router.get('/', [jwt_validator_1.validateJWT], participante_controller_1.getPart
 router.get('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByPartidoByParticipante);
 router.get('/points', [jwt_validator_1.validateJWT], participante_controller_1.getPointsByParticipante);
 router.post('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.createPrediccion);
-router.get('/predicciones', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByParticipante);
+router.get('/predicciones/:ci', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByParticipante);
+router.put('/:id', [jwt_validator_1.validateJWT], participante_controller_1.actualizarParticipante);
 exports.default = router;
 //# sourceMappingURL=participante.routes.js.map
