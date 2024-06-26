@@ -14,20 +14,28 @@
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Goles {{partido?.local}}</mat-label>
                         <input matInput type="number" formControlName="resultadoLocal" required>
-                        <mat-error
-                            *ngIf="resultadoForm.controls['resultadoLocal'].invalid && resultadoForm.controls['resultadoLocal'].touched">
-                            Debes ingresar los goles del equipo local.
-                        </mat-error>
+                        <mat-error *ngIf="resultadoForm.controls['resultadoLocal'].invalid && resultadoForm.controls['resultadoLocal'].touched">
+                            <ng-container *ngIf="resultadoForm.controls['resultadoLocal'].errors?.['required']">
+                              Debes ingresar los goles del equipo local.
+                            </ng-container>
+                            <ng-container *ngIf="resultadoForm.controls['resultadoLocal'].errors?.['min']">
+                              Los goles no pueden ser negativos.
+                            </ng-container>
+                          </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="form-group">
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Goles {{partido?.visitante}}</mat-label>
                         <input matInput type="number" formControlName="resultadoVisitante" required>
-                        <mat-error
-                            *ngIf="resultadoForm.controls['resultadoVisitante'].invalid && resultadoForm.controls['resultadoVisitante'].touched">
-                            Debes ingresar los goles del equipo visitante.
-                        </mat-error>
+                        <mat-error *ngIf="resultadoForm.controls['resultadoVisitante'].invalid && resultadoForm.controls['resultadoVisitante'].touched">
+                            <ng-container *ngIf="resultadoForm.controls['resultadoVisitante'].errors?.['required']">
+                              Debes ingresar los goles del equipo visitante.
+                            </ng-container>
+                            <ng-container *ngIf="resultadoForm.controls['resultadoVisitante'].errors?.['min']">
+                              Los goles no pueden ser negativos.
+                            </ng-container>
+                          </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="form-group d-flex justify-content-center">

@@ -91,7 +91,7 @@ export const resolvePartidoNew = async (req: Request, res: Response) => {
             );
             
         }
-        if (fase[0][0].fase_name === 'Final') {
+        if (fase[0][0].fase_name === 'FINAL') {
             await calculateChampionPoints(result_local, result_visitante, id_partido);
         }
         

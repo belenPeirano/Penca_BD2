@@ -35,8 +35,6 @@ export class TablaResultadosComponent implements OnInit {
     if (this.ciUsuario !== '') {
       this.api.getPuntos(this.ciUsuario).subscribe({
         next: (puntos) => {
-          console.log(puntos);
-          console.log(puntos.total_puntos);
           this.puntosUsuario = puntos.total_puntos;
         }
       });

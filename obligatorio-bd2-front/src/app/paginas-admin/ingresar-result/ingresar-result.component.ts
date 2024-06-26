@@ -30,8 +30,8 @@ export class IngresarResultComponent {
 
   ngOnInit(): void {
     this.resultadoForm = this.fb.group({
-      resultadoLocal: new FormControl('', [Validators.required]),
-      resultadoVisitante: new FormControl('', [Validators.required])
+      resultadoLocal: new FormControl('', [Validators.required, Validators.min(0)]),
+      resultadoVisitante: new FormControl('', [Validators.required, Validators.min(0)])
     });
 
     this.route.paramMap.subscribe(params => {

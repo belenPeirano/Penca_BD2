@@ -12,3 +12,14 @@ export function chequeoContraseñas(password: string, confirmPassword: string): 
     return null;
   };
 }
+
+export function equiposDiferentes(control: AbstractControl) {
+  const equipoLocal = control.get('equipoLocal')?.value;
+  const equipoVisitante = control.get('equipoVisitante')?.value;
+
+  if (equipoLocal && equipoVisitante && equipoLocal === equipoVisitante) {
+    return { equiposIguales: true };
+  }
+
+  return null;
+}

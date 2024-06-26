@@ -132,6 +132,7 @@
                 <div class="grid-item">
                     <div class="d-flex justify-content-center">
                         <span class="pb-1">{{ partido.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+                        <span *ngIf="partido.fase === 'FINAL'" class="pb-1 px-1 fw-bold">{{partido.fase}}</span>
                     </div>
                     <mat-divider></mat-divider>
                     <div class="d-flex justify-content-center p-2">

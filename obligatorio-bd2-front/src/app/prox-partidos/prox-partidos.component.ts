@@ -8,6 +8,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { IPartido } from '../interfaces/IPartido';
 import { Router } from '@angular/router';
 import { PartidoService } from '../services/partido.service';
+import { Observable, tap } from 'rxjs';
+import { IPrediccion } from '../interfaces/IPrediccion';
 
 @Component({
   selector: 'app-prox-partidos',
@@ -20,6 +22,8 @@ import { PartidoService } from '../services/partido.service';
 export class ProxPartidosComponent {
 
   partidos: IPartido[] = [];
+  usuarioCi: string = localStorage.getItem('ci') ?? '';
+  predicciones: IPrediccion[] = [];
 
   constructor(private router: Router, private partido: PartidoService) { }
 
@@ -29,6 +33,17 @@ export class ProxPartidosComponent {
         this.partidos = partidos;
       }
     });
+    this.partido.getPredicciones(this.usuarioCi).subscribe({
+      next: (predicciones) => {
+        this.predicciones = predicciones;
+      }
+    });
+  }
+
+  
+  obtenerPrediccion(partidoId: number): IPrediccion | undefined {
+    const prediccion = this.predicciones.find(prediccion => prediccion.id_partido === partidoId);
+    return prediccion;
   }
 
   abrirPrediccion(partidoId: number): void {
