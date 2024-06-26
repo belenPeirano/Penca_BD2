@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Router } from '@angular/router';
 import { IPartido } from '../../interfaces/IPartido';
 import { ApiService } from '../../services/api.service';
 import { MatFormField } from '@angular/material/form-field';
@@ -15,6 +14,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PartidoService } from '../../services/partido.service';
+import { IEquipo } from '../../interfaces/iequipo';
+import { IFase } from '../../interfaces/ifase';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-pagina-admin',
@@ -32,13 +34,13 @@ export class PaginaAdminComponent implements OnInit{
   partidos: IPartido[] = [];
   partido: IPartido | undefined;
   partidoForm: FormGroup;
+  equipos: IEquipo[] = [];
+  fases: IFase[] = [];
 
-  equipos = ['Equipo A', 'Equipo B', 'Equipo C']; // Lista de equipos
-  fases = ['Fase 1', 'Fase 2', 'Fase 3']; // Lista de fases
-
-  constructor(private api: ApiService, private router: Router, private fb: FormBuilder, private partidoServ: PartidoService) {
+  constructor(private api: ApiService, private fb: FormBuilder, private partidoServ: PartidoService, private snackBar: MatSnackBar) {
     this.partidoForm = this.fb.group({
       fecha: ['', Validators.required],
+      hora: ['', Validators.required],
       lugar: ['', Validators.required],
       equipoLocal: ['', Validators.required],
       equipoVisitante: ['', Validators.required],
@@ -52,24 +54,52 @@ export class PaginaAdminComponent implements OnInit{
         this.partidos = partidos;
       }
     });
+    this.api.getEquipos().subscribe({
+      next: (equipos) => {
+        this.equipos = equipos;
+      }
+    });
+    this.api.getFases().subscribe({
+      next: (fases) => {
+        this.fases = fases;
+      }
+    });
   }
 
-  getPartido(id: number): void {
-    // this.api.getPartido(id).subscribe({
-    //   next: (partido) => {
-    //     this.partido = partido;
-    //   },
-    //   error: (error) => {
-    //     console.error('Error al obtener el partido:', error);
-    //   }
-    // });
-  }
-
-  submitPartido(): void {
+  guardarPartido(): void {
     if (this.partidoForm.valid) {
-      console.log('Nuevo partido:', this.partidoForm.value);
-      // Aquí puedes procesar el formulario, por ejemplo, enviar los datos al servidor
-      // Reiniciar el formulario después de enviar
+      const fecha = this.partidoForm.get('fecha')?.value;
+      const hora = this.partidoForm.get('hora')?.value;
+      const lugar = this.partidoForm.get('lugar')?.value;
+      const equipoLocal = this.partidoForm.get('equipoLocal')?.value;
+      const equipoVisitante = this.partidoForm.get('equipoVisitante')?.value;
+      const fase = this.partidoForm.get('fase')?.value;
+
+      const fechaHora = `${fecha} ${hora}:00`
+
+      const partido = {
+        fecha: fechaHora,
+        lugar: lugar,
+        fase: fase,
+        equipo_local: equipoLocal,
+        equipo_visitante: equipoVisitante
+      };
+
+      this.partidoServ.guardarPartido(partido).subscribe({
+        next: (res) => {
+          this.partidoServ.partidosPasados().subscribe({
+            next: (partidos) => {
+              this.partidos = partidos;
+              this.snackBar.open('Partido guardado', 'Cerrar', {
+                duration: 2000,
+              });
+            }
+          });
+        },
+        error: (error) => {
+          console.error('Error al guardar el partido:', error);
+        }
+      });
       this.partidoForm.reset();
     }
   }

@@ -14,6 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvePartidoNew = exports.getEquipos = exports.resolvePartido = exports.createPartido = exports.getPartidos = void 0;
 const calculatePoints_1 = __importDefault(require("../helpers/calculatePoints"));
+
+exports.getFases = exports.getEquipos = exports.resolvePartido = exports.createPartido = exports.getPartidos = void 0;
+
 const db_conn_1 = __importDefault(require("../db/db.conn"));
 const calculateChampionPoints_1 = __importDefault(require("../helpers/calculateChampionPoints"));
 const getPartidos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62,6 +65,7 @@ const getEquipos = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getEquipos = getEquipos;
+
 const resolvePartidoNew = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_partido, result_local, result_visitante } = req.body;
     try {
@@ -85,4 +89,17 @@ const resolvePartidoNew = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.resolvePartidoNew = resolvePartidoNew;
+
+const getFases = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const [fases] = yield db_conn_1.default.promise().query('SELECT * FROM fase;');
+        res.json(fases);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error al obtener fases' });
+    }
+});
+exports.getFases = getFases;
+
 //# sourceMappingURL=partido.controller.js.map

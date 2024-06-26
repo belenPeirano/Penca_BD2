@@ -49,7 +49,14 @@ export class PartidoService {
   }
 
   actualizarPrediccion(prediccion: IPrediccion): Observable<IPrediccion> {
-    console.log('Actualizando prediccion', prediccion);
     return this.http.put<IPrediccion>(`${this.baseUrl}/participante/prediccion`, prediccion);
+  }
+
+  guardarPartido(partido: any): Observable<IPartido> {
+    return this.http.post<IPartido>(`${this.baseUrl}/partido`, partido);
+  }
+
+  guardarResultado(partidoId: number, resultadoLocal: number, resultadoVisitante: number): Observable<IPartido> {
+    return this.http.put<IPartido>(`${this.baseUrl}/partido`, { id_partido: partidoId, result_local: resultadoLocal, result_visitante: resultadoVisitante });
   }
 }

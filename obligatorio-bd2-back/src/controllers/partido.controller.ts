@@ -46,6 +46,16 @@ export const getEquipos = async (req: Request, res: Response) => {
 }
 
 
+export const getFases = async (req: Request, res: Response) => {
+    try {
+        const [fases] = await connection.promise().query('SELECT * FROM fase;');
+        res.json(fases);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({message: 'Error al obtener fases'});
+    }
+}
+
 export const resolvePartidoNew = async (req: Request, res: Response) => {
     const { id_partido, result_local, result_visitante } = req.body;
     
