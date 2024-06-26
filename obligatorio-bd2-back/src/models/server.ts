@@ -5,6 +5,7 @@ import participanteRoutes from '../routes/participante.routes';
 import partidoRoutes from '../routes/partido.routes';
 import carreraRoutes from '../routes/carrera.routes';
 import path from 'path';
+import '../helpers/emailSender';
 
 class Server {
     private app: express.Application;
