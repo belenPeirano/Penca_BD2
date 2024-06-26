@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { IEstudiante } from '../interfaces/IEstudiante';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ICarrera } from '../interfaces/icarrera';
 import { IEquipo } from '../interfaces/iequipo';
 import { IFase } from '../interfaces/ifase';

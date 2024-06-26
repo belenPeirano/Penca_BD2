@@ -9,6 +9,7 @@ import { PerfilComponent } from './paginas-estudiante/perfil/perfil.component';
 import { ReglamentoComponent } from './paginas-estudiante/reglamento/reglamento.component';
 import { PaginaAdminComponent } from './paginas-admin/pagina-admin/pagina-admin.component';
 import { IngresarResultComponent } from './paginas-admin/ingresar-result/ingresar-result.component';
+import { authGuard } from './helpers/auth.guard';
 
 export const routes: Routes = [
     {
@@ -21,27 +22,27 @@ export const routes: Routes = [
         path: 'register', component: RegisterComponent
     },
     {
-        path: 'proxPartidos', component: ProxPartidosComponent
+        path: 'proxPartidos', component: ProxPartidosComponent, canActivate: [authGuard]
     },
     {
-        path: 'partidosPasados', component: PartidosPasadosComponent
+        path: 'partidosPasados', component: PartidosPasadosComponent, canActivate: [authGuard]
     },
     {
-        path: 'resultados', component: TablaResultadosComponent
+        path: 'resultados', component: TablaResultadosComponent, canActivate: [authGuard]
     },
     {
-        path: 'prediccion/:id', component: PrediccionComponent
+        path: 'prediccion/:id', component: PrediccionComponent, canActivate: [authGuard]
     },
     {
-        path: 'perfil', component: PerfilComponent
+        path: 'perfil', component: PerfilComponent, canActivate: [authGuard]
     },
     {
-        path: 'reglamento', component: ReglamentoComponent
+        path: 'reglamento', component: ReglamentoComponent, canActivate: [authGuard]
     },
     {
-        path: 'admin', component: PaginaAdminComponent
+        path: 'admin', component: PaginaAdminComponent, canActivate: [authGuard]
     },
     {
-        path: 'resultado/:id', component: IngresarResultComponent
+        path: 'resultado/:id', component: IngresarResultComponent, canActivate: [authGuard]
     }
 ];
