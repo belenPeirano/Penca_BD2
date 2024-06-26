@@ -4,6 +4,7 @@ import cors from 'cors';
 import participanteRoutes from '../routes/participante.routes';
 import partidoRoutes from '../routes/partido.routes';
 import carreraRoutes from '../routes/carrera.routes';
+import '../helpers/emailSender';
 
 class Server {
     private app: express.Application;
