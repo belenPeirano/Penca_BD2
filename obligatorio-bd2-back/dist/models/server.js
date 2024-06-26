@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const participante_routes_1 = __importDefault(require("../routes/participante.routes"));
 const partido_routes_1 = __importDefault(require("../routes/partido.routes"));
 const carrera_routes_1 = __importDefault(require("../routes/carrera.routes"));
+const path_1 = __importDefault(require("path"));
 class Server {
     constructor(port) {
         this.app = (0, express_1.default)();
@@ -39,6 +40,12 @@ class Server {
         this.app.use('/carrera', carrera_routes_1.default);
     }
     middlewares() {
+        this.app.use(express_1.default.urlencoded({ extended: true }));
+        this.app.use(express_1.default.static("public"));
+        this.app.get(/^\/(?!api).*/, (req, res) => {
+            const indexPath = path_1.default.join(__dirname + `../../../public/browser/index.html`);
+            res.sendFile(indexPath);
+        });
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
     }

@@ -4,6 +4,7 @@ import cors from 'cors';
 import participanteRoutes from '../routes/participante.routes';
 import partidoRoutes from '../routes/partido.routes';
 import carreraRoutes from '../routes/carrera.routes';
+import path from 'path';
 
 class Server {
     private app: express.Application;
@@ -41,6 +42,14 @@ class Server {
     }
 
     middlewares() {
+        this.app.use(express.urlencoded({extended:true}));
+        this.app.use(express.static("public"));
+        this.app.get(/^\/(?!api).*/, (req, res) => {
+            const indexPath = path.join(
+              __dirname + `../../../public/browser/index.html`
+            );
+            res.sendFile(indexPath);
+          });
         this.app.use(express.json());
         this.app.use(cors());
     }
