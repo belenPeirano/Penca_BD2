@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IEstudiante } from '../interfaces/IEstudiante';
-import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ICarrera } from '../interfaces/icarrera';
 import { IEquipo } from '../interfaces/iequipo';
+import { IFase } from '../interfaces/ifase';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,10 @@ export class ApiService {
   actualizarPerfil(estudiante: any): Observable<{ message: string }> {
     console.log('Actualizando perfil', estudiante);
     return this.http.put<{ message: string }>(`${this.baseUrl}/participante/actualizar`, estudiante);
+  }
+
+  getFases(): Observable<IFase[]> {
+    return this.http.get<IFase[]>(`${this.baseUrl}/partido/fases`);
   }
 
 }

@@ -7,10 +7,11 @@ const router = (0, express_1.Router)();
 router.post('/register', participante_controller_1.register);
 router.post('/login', participante_controller_1.login);
 router.get('/', [jwt_validator_1.validateJWT], participante_controller_1.getParticipantes);
-router.get('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByPartidoByParticipante);
+router.get('/:ci/prediccion/:id_partido', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionByPartidoByParticipante);
 router.get('/points', [jwt_validator_1.validateJWT], participante_controller_1.getPointsByParticipante);
 router.post('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.createPrediccion);
 router.get('/predicciones/:ci', [jwt_validator_1.validateJWT], participante_controller_1.getPrediccionesByParticipante);
-router.put('/:id', [jwt_validator_1.validateJWT], participante_controller_1.actualizarParticipante);
+router.put('/actualizar', [jwt_validator_1.validateJWT], participante_controller_1.actualizarParticipante);
+router.put('/prediccion', [jwt_validator_1.validateJWT], participante_controller_1.actualizarPrediccion);
 exports.default = router;
 //# sourceMappingURL=participante.routes.js.map
