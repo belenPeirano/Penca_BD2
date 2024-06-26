@@ -10,7 +10,7 @@ import { IEquipo } from '../interfaces/iequipo';
 })
 export class ApiService {
 
-  baseUrl = 'http://localhost:3000';
+  baseUrl = 'http://localhost:3000/api';
   http = inject(HttpClient);
 
   constructor() { }

@@ -36,13 +36,13 @@ class Server {
     }
 
     routes() {
-        this.app.use('/participante', participanteRoutes);
-        this.app.use('/partido', partidoRoutes);
-        this.app.use('/carrera', carreraRoutes);
+        this.app.use('/api/participante', participanteRoutes);
+        this.app.use('/api/partido', partidoRoutes);
+        this.app.use('/api/carrera', carreraRoutes);
     }
 
     middlewares() {
-        this.app.use(express.urlencoded({extended:true}));
+        //this.app.use(express.urlencoded({extended:true}));
         this.app.use(express.static("public"));
         this.app.get(/^\/(?!api).*/, (req, res) => {
             const indexPath = path.join(
