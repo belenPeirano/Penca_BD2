@@ -82,12 +82,11 @@ export const getPrediccionByPartidoByParticipante = async (req: Request, res: Re
 
 export const getPointsByParticipante = async (req: Request, res: Response) => {
     try {
-        const { ci } = req.query;
+        const { ci } = req.params;
         const [puntos] = await connection.promise().query(`
-            SELECT SUM(pr.puntaje) AS total_puntos
-            FROM prediccion pr
-            JOIN estudiante e ON pr.ci_estudiante = e.ci
-            WHERE pr.ci_estudiante = ?
+            SELECT puntaje_total AS total_puntos
+            FROM estudiante
+            WHERE ci = ?
         `, [ci]);
         const total_puntos = puntos[0].total_puntos;
         res.json({ total_puntos });

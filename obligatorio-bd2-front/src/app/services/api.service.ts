@@ -27,8 +27,7 @@ export class ApiService {
   }
 
   getPuntos(ci: string): Observable<{ total_puntos: string }> {
-    const params = new HttpParams().set('ci', ci);
-    return this.http.get<{ total_puntos: string }>(`${this.baseUrl}/participante/points`, { params });
+    return this.http.get<{ total_puntos: string }>(`${this.baseUrl}/participante/${ci}/points`);
   }
 
   getCarreras(): Observable<ICarrera[]> {
