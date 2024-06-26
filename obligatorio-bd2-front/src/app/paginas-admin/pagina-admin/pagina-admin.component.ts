@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { IPartido } from '../../interfaces/IPartido';
 import { ApiService } from '../../services/api.service';
 import { MatFormField } from '@angular/material/form-field';
@@ -17,6 +17,7 @@ import { PartidoService } from '../../services/partido.service';
 import { IEquipo } from '../../interfaces/iequipo';
 import { IFase } from '../../interfaces/ifase';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { equiposDiferentes } from '../../helpers/validador';
 
 @Component({
   selector: 'app-pagina-admin',
@@ -37,7 +38,7 @@ export class PaginaAdminComponent implements OnInit{
   equipos: IEquipo[] = [];
   fases: IFase[] = [];
 
-  constructor(private api: ApiService, private fb: FormBuilder, private partidoServ: PartidoService, private snackBar: MatSnackBar) {
+  constructor(private api: ApiService, private fb: FormBuilder, private partidoServ: PartidoService, private snackBar: MatSnackBar, private router: Router) {
     this.partidoForm = this.fb.group({
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
@@ -45,7 +46,8 @@ export class PaginaAdminComponent implements OnInit{
       equipoLocal: ['', Validators.required],
       equipoVisitante: ['', Validators.required],
       fase: ['', Validators.required]
-    });
+    }, { validators: equiposDiferentes}
+  );
   }
 
   ngOnInit(): void {
@@ -102,6 +104,11 @@ export class PaginaAdminComponent implements OnInit{
       });
       this.partidoForm.reset();
     }
+  }
+
+  logout(): void {
+    localStorage.removeItem('x-token');
+    this.router.navigate(['/login']);
   }
 
 }

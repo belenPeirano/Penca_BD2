@@ -45,8 +45,8 @@ export class PrediccionComponent implements OnInit {
       id_partido: new FormControl(this.partidoId),
       ci_estudiante: new FormControl(this.ciUsuario),
       equipo_ganador: new FormControl('', [Validators.required]),
-      result_local: new FormControl('', [Validators.required]),
-      result_visitante: new FormControl('', [Validators.required]),
+      result_local: new FormControl('', [Validators.required, Validators.min(0)]),
+      result_visitante: new FormControl('', [Validators.required, Validators.min(0)]),
       puntaje: new FormControl(0)
     });
   }

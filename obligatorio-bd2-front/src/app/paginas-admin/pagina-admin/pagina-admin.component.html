@@ -1,3 +1,10 @@
+<div class="banner">
+    <img src="https://www.ucu.edu.uy/plantillas/images/logo_ucu.svg" alt="">
+    <h2>Penca Copa America 2024</h2>
+    <div class="logout">
+        <a (click)="logout()">Cerrar Sesión</a>
+    </div>
+</div>
 <div class="container">
     <mat-tab-group>
         <mat-tab label="Partidos">
@@ -10,7 +17,7 @@
                         <mat-card appearance="outlined" class="partido">
                             <mat-card-content>
                                 <div class="d-flex justify-content-center">
-                                    <span class="pb-1">{{ partido.fecha }}</span>
+                                    <span class="pb-1">{{ partido.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
                                 </div>
                                 <mat-divider></mat-divider>
                                 <div class="d-flex justify-content-center p-2">
@@ -99,6 +106,9 @@
                                     Debes seleccionar una fase.
                                 </mat-error>
                             </mat-form-field>
+                            <mat-error *ngIf="partidoForm.hasError('equiposIguales')">
+                                El equipo local y el equipo visitante no pueden ser el mismo.
+                              </mat-error>
                             <div class="d-flex justify-content-center">
                                 <button mat-raised-button class="btnConfirmar" (click)="guardarPartido()"
                                     [disabled]="partidoForm.invalid">

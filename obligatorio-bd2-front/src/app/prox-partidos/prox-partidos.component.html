@@ -101,9 +101,10 @@
             <ng-container *ngIf="partido.fase === 'FINAL' || partido.fase === 'TERCER'">
                 <mat-grid-tile>
                     <mat-card appearance="outlined" class="partido">
-                        <mat-card-content class="d-flex justify-content-center align-items-center">
+                        <mat-card-content>
                             <div class="d-flex justify-content-center">
                                 <span class="pb-1">{{ partido.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+                                <span *ngIf="partido.fase === 'FINAL'" class="pb-1 px-1 fw-bold">{{partido.fase}}</span>
                             </div>
                             <mat-divider></mat-divider>
                             <div class="d-flex justify-content-center p-2">

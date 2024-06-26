@@ -1,11 +1,5 @@
 @import '../../../styles';
 
-.fase {
-    width: 90%;
-    background-color: $primary-color;
-    color: #FFF;
-}
-
 .titulo {
     display: flex;
     width: 100%;
@@ -56,4 +50,25 @@
     background-color: $primary-color !important;
     color: #fff !important;
 }
+
+.banner {
+    background-color: $secondary-color;
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+img {
+    height: 80px;
+}
+
+h2 {
+    color: #eceaea;
+    font-size: xx-large;
+    margin: 0 !important;
+}	
 
