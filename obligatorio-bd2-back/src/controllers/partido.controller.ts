@@ -62,7 +62,7 @@ export const resolvePartidoNew = async (req: Request, res: Response) => {
     try {
 
         const fase = await connection.promise().query(
-            'SELECT fase FROM partido WHERE id_partido = ?;',
+            'SELECT f.nombre AS fase_name FROM partido p JOIN fase f ON p.fase = f.id_fase WHERE p.id_partido = ?;',
             [id_partido]
         );
         await connection.promise().query(
@@ -89,12 +89,12 @@ export const resolvePartidoNew = async (req: Request, res: Response) => {
                 'UPDATE estudiante SET puntaje_total = puntaje_total + ? WHERE ci = ?;',
                 [points, ci_estudiante]
             );
-
-            if (fase === 'final') {
-                await calculateChampionPoints(result_local, result_visitante);
-            }
+            
         }
-
+        if (fase[0][0].fase_name === 'Final') {
+            await calculateChampionPoints(result_local, result_visitante, id_partido);
+        }
+        
         res.json({ message: 'Partido resuelto y predicciones actualizadas' });
     } catch (error) {
         console.error(error);

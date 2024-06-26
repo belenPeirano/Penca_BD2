@@ -9,6 +9,7 @@ const cors_1 = __importDefault(require("cors"));
 const participante_routes_1 = __importDefault(require("../routes/participante.routes"));
 const partido_routes_1 = __importDefault(require("../routes/partido.routes"));
 const carrera_routes_1 = __importDefault(require("../routes/carrera.routes"));
+require("../helpers/emailSender");
 class Server {
     constructor(port) {
         this.app = (0, express_1.default)();

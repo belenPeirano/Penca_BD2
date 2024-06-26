@@ -1,34 +1,48 @@
 import connection from "../db/db.conn";
 
-const calculateChampionPoints = async (result_local: number, result_visitante: number) => {
+const calculateChampionPoints = async (result_local: number, result_visitante: number, id_partido: number) => {
     try {
-        const champion = result_local > result_visitante ? 'local' : 'visitante';
-        const runnerUp = result_local > result_visitante ? 'visitante' : 'local';
+        const [partidoResult]: any[] = await connection.promise().query(
+            'SELECT equipo_local, equipo_visitante FROM partido WHERE id_partido = ?',
+            [id_partido]
+        );
+
+        if (partidoResult.length === 0) {
+            console.log('No partido found with the given id');
+            return;
+        }
+
+        const equipoLocalId = partidoResult[0].equipo_local;
+        const equipoVisitanteId = partidoResult[0].equipo_visitante;
+
+        const champion = result_local > result_visitante ? equipoLocalId : equipoVisitanteId;
+        const runnerUp = result_local > result_visitante ? equipoVisitanteId : equipoLocalId;
 
         const [championPredictions]: any[] = await connection.promise().query(
-            'SELECT ci_estudiante, prediccion_campeon, prediccion_subcampeon FROM estudiante'
+            'SELECT ci, predic_campeon, predic_subcampeon FROM estudiante',
+            [id_partido]
         );
 
         for (const prediction of championPredictions) {
-            const { ci_estudiante, prediccion_campeon, prediccion_subcampeon } = prediction;
+            const { ci, predic_campeon, predic_subcampeon } = prediction;
             let points = 0;
 
-            if (prediccion_campeon === champion) {
+            if (predic_campeon == champion) {
                 points += 10;
             }
 
-            if (prediccion_subcampeon === runnerUp) {
+            if (predic_subcampeon == runnerUp) {
                 points += 5;
             }
 
-            if (prediccion_campeon === champion && prediccion_subcampeon === runnerUp) {
+            if (predic_campeon == champion && predic_subcampeon === runnerUp) {
                 points = 15;
             }
 
             if (points > 0) {
                 await connection.promise().query(
-                    'UPDATE estudiante SET puntaje_total = puntaje_total + ? WHERE ci = ?;',
-                    [points, ci_estudiante]
+                    'UPDATE estudiante SET puntaje_total = puntaje_total + ? WHERE ci = ?',
+                    [points, ci]
                 );
             }
         }
@@ -39,4 +53,3 @@ const calculateChampionPoints = async (result_local: number, result_visitante: n
 };
 
 export default calculateChampionPoints;
-
