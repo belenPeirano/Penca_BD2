@@ -4,33 +4,31 @@
             <div class="titulo">
                 <h1>Partidos Pasados</h1>
             </div>
-                <mat-grid-list cols="3" rowHeight="2:1" class="grid">
-                    <ng-container *ngFor="let partido of partidos">
-                        <mat-grid-tile>
-                            <mat-card appearance="outlined" class="partido">
-                                <mat-card-content>
-                                    <div class="d-flex justify-content-center">
-                                        <span class="pb-1">{{ partido.fecha }}</span>
-                                    </div>
-                                    <mat-divider></mat-divider>
-                                    <div class="d-flex justify-content-center p-2">
-                                        <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
-                                        <span class="p-2 fw-bold">{{ partido.local }}</span>
-                                        <span class="p-2"> vs </span>
-                                        <span class="p-2 fw-bold">{{ partido.visitante }}</span>
-                                        <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <button mat-raised-button class="prediccion"
-                                            [routerLink]="['/resultado', partido.id_partido]">Ingresar Resultado</button>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
-                        </mat-grid-tile>
-                    </ng-container>
-                </mat-grid-list>
-            
-
+            <mat-grid-list cols="3" rowHeight="2:1" class="grid">
+                <ng-container *ngFor="let partido of partidos">
+                    <mat-grid-tile>
+                        <mat-card appearance="outlined" class="partido">
+                            <mat-card-content>
+                                <div class="d-flex justify-content-center">
+                                    <span class="pb-1">{{ partido.fecha }}</span>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <div class="d-flex justify-content-center p-2">
+                                    <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
+                                    <span class="p-2 fw-bold">{{ partido.local }}</span>
+                                    <span class="p-2"> vs </span>
+                                    <span class="p-2 fw-bold">{{ partido.visitante }}</span>
+                                    <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <button mat-raised-button class="prediccion"
+                                        [routerLink]="['/resultado', partido.id_partido]">Ingresar Resultado</button>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-grid-tile>
+                </ng-container>
+            </mat-grid-list>
         </mat-tab>
 
         <mat-tab label="Ingresar Partido">
@@ -40,13 +38,22 @@
                         <h1>Ingresar Partido</h1>
                     </mat-card-header>
                     <mat-card-content>
-                        <form [formGroup]="partidoForm" (ngSubmit)="submitPartido()">
+                        <form [formGroup]="partidoForm">
                             <mat-form-field class="full-width">
                                 <mat-label>Fecha</mat-label>
                                 <input matInput type="date" formControlName="fecha" required>
                                 <mat-error
                                     *ngIf="partidoForm.get('fecha')!.invalid && partidoForm.get('fecha')!.touched">
                                     La fecha es requerida.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Hora</mat-label>
+                                <input matInput type="time" formControlName="hora" required>
+                                <mat-error
+                                    *ngIf="partidoForm.get('hora')!.invalid && partidoForm.get('hora')!.touched">
+                                    La hora es requerida.
                                 </mat-error>
                             </mat-form-field>
 
@@ -62,8 +69,7 @@
                             <mat-form-field class="full-width">
                                 <mat-label>Equipo Local</mat-label>
                                 <mat-select formControlName="equipoLocal" required>
-                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo">{{ equipo
-                                        }}</mat-option>
+                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo.id_equipo">{{ equipo.nombre }}</mat-option>
                                 </mat-select>
                                 <mat-error
                                     *ngIf="partidoForm.get('equipoLocal')!.invalid && partidoForm.get('equipoLocal')!.touched">
@@ -74,8 +80,7 @@
                             <mat-form-field class="full-width">
                                 <mat-label>Equipo Visitante</mat-label>
                                 <mat-select formControlName="equipoVisitante" required>
-                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo">{{ equipo
-                                        }}</mat-option>
+                                    <mat-option *ngFor="let equipo of equipos" [value]="equipo.id_equipo">{{ equipo.nombre }}</mat-option>
                                 </mat-select>
                                 <mat-error
                                     *ngIf="partidoForm.get('equipoVisitante')!.invalid && partidoForm.get('equipoVisitante')!.touched">
@@ -86,14 +91,14 @@
                             <mat-form-field class="full-width">
                                 <mat-label>Fase</mat-label>
                                 <mat-select formControlName="fase" required>
-                                    <mat-option *ngFor="let fase of fases" [value]="fase">{{ fase }}</mat-option>
+                                    <mat-option *ngFor="let fase of fases" [value]="fase.id_fase">{{ fase.nombre }}</mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="partidoForm.get('fase')!.invalid && partidoForm.get('fase')!.touched">
                                     Debes seleccionar una fase.
                                 </mat-error>
                             </mat-form-field>
                             <div class="d-flex justify-content-center">
-                                <button mat-raised-button class="btnConfirmar" type="submit"
+                                <button mat-raised-button class="btnConfirmar" (click)="guardarPartido()"
                                     [disabled]="partidoForm.invalid">Guardar</button>
                             </div>
                         </form>

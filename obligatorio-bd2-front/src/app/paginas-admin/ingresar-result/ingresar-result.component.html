@@ -9,10 +9,10 @@
               </div>
         </mat-card-header>
         <mat-card-content>
-            <form (ngSubmit)="submitResultado()" [formGroup]="resultadoForm" novalidate>
+            <form [formGroup]="resultadoForm">
                 <div class="form-group">
                     <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Goles {{partido!.local}}</mat-label>
+                        <mat-label>Goles {{partido?.local}}</mat-label>
                         <input matInput type="number" formControlName="resultadoLocal" required>
                         <mat-error
                             *ngIf="resultadoForm.controls['resultadoLocal'].invalid && resultadoForm.controls['resultadoLocal'].touched">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Goles {{partido!.visitante}}</mat-label>
+                        <mat-label>Goles {{partido?.visitante}}</mat-label>
                         <input matInput type="number" formControlName="resultadoVisitante" required>
                         <mat-error
                             *ngIf="resultadoForm.controls['resultadoVisitante'].invalid && resultadoForm.controls['resultadoVisitante'].touched">
@@ -31,7 +31,7 @@
                     </mat-form-field>
                 </div>
                 <div class="form-group d-flex justify-content-center">
-                    <button mat-raised-button class="btnConfirmar" type="submit"
+                    <button mat-raised-button class="btnConfirmar" (click)="guardarResultado()"
                         [disabled]="resultadoForm.invalid">Guardar Resultado</button>
                 </div>
             </form>
