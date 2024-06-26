@@ -11,6 +11,7 @@ import { IPartido } from '../../interfaces/IPartido';
 import { ApiService } from '../../services/api.service';
 import { MatIcon } from '@angular/material/icon';
 import { PartidoService } from '../../services/partido.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-ingresar-result',
@@ -25,7 +26,7 @@ export class IngresarResultComponent {
   resultadoForm!: FormGroup;
   partidoId!: number;
 
-  constructor(private partidoServ: PartidoService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
+  constructor(private partidoServ: PartidoService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.resultadoForm = this.fb.group({
@@ -60,6 +61,9 @@ export class IngresarResultComponent {
       const resuladoLocal = this.resultadoForm.get('resultadoLocal')?.value;
       const resultadoVisitante = this.resultadoForm.get('resultadoVisitante')?.value;
       this.partidoServ.guardarResultado(this.partidoId, resuladoLocal, resultadoVisitante).subscribe(response => {
+        this.snackBar.open('Resultado guardado', 'Cerrar', {
+          duration: 2000,
+        });
         console.log('Predicción guardada', response);
       });
       this.router.navigate(['/admin']);

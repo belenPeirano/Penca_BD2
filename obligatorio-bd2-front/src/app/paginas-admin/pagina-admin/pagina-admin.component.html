@@ -16,12 +16,14 @@
                                 <div class="d-flex justify-content-center p-2">
                                     <!-- <img [src]="partido.banderaLocal" alt="{{ partido.local }} bandera" class="bandera"> -->
                                     <span class="p-2 fw-bold">{{ partido.local }}</span>
+                                    <span class="p-2 fw-bold fs-6" *ngIf="partido.result_local !== null">{{ partido.result_local }}</span>
                                     <span class="p-2"> vs </span>
+                                    <span class="p-2 fw-bold fs-6" *ngIf="partido.result_visitante !== null">{{ partido.result_visitante }}</span>
                                     <span class="p-2 fw-bold">{{ partido.visitante }}</span>
                                     <!-- <img [src]="partido.banderaVisitante" alt="{{ partido.visitante }} bandera" class="bandera"> -->
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button mat-raised-button class="prediccion"
+                                    <button mat-raised-button class="prediccion" *ngIf="partido.result_local == null"
                                         [routerLink]="['/resultado', partido.id_partido]">Ingresar Resultado</button>
                                 </div>
                             </mat-card-content>
@@ -99,7 +101,9 @@
                             </mat-form-field>
                             <div class="d-flex justify-content-center">
                                 <button mat-raised-button class="btnConfirmar" (click)="guardarPartido()"
-                                    [disabled]="partidoForm.invalid">Guardar</button>
+                                    [disabled]="partidoForm.invalid">
+                                    Guardar
+                                </button>
                             </div>
                         </form>
                     </mat-card-content>
