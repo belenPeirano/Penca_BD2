@@ -29,7 +29,7 @@ Para iniciar la aplicación, siga estos pasos:
 4. Para visualizar los datos en la base de datos, abra el programa MySQL WorkBench y cree una nueva conexión con los datos:
    - Hostname: localhost
    - Port: 3306
-   - Username: root
+   - Username: dbAdmin
    - Password: root1234
 
 ## Detener la Aplicación
