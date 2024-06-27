@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/internal/Observable';
   providedIn: 'root'
 })
 export class AuthService {
-  baseUrl = 'http://localhost:3000';
+  baseUrl = 'http://localhost:3000/api';
   http = inject(HttpClient);
 
   login(credentials: { email: string, psw: string }): Observable<any> {
