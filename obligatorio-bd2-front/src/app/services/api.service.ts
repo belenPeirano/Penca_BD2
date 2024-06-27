@@ -11,7 +11,7 @@ import { IFase } from '../interfaces/ifase';
 })
 export class ApiService {
 
-  baseUrl = 'http://localhost:3000';
+  baseUrl = 'http://localhost:3000/api';
   http = inject(HttpClient);
 
   constructor() { }
