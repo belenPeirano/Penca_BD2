@@ -4,7 +4,7 @@ Este documento proporciona instrucciones para iniciar y detener la aplicación.
 
 ## Requisitos Previos
 
-Asegúrese de tener instalados los siguientes componentes en su sistema:
+Asegúrese de tener instalado el siguiente componente:
 - [Docker](https://www.docker.com/get-started)
 
 ## Archivos Incluidos
@@ -16,7 +16,7 @@ Asegúrese de tener instalados los siguientes componentes en su sistema:
 
 Para iniciar la aplicación, siga estos pasos:
 
-1. Navegue al directorio donde se encuentran los archivos `start_app.bat` y `stop_app.bat`.
+1. Ubiquese en la carpeta del proyecto, donde se encuentran los archivos `start_app.bat` y `stop_app.bat`.
 2. Haga doble clic en el archivo `start_app.bat`.
 
    Este script realizará las siguientes acciones:
@@ -24,13 +24,19 @@ Para iniciar la aplicación, siga estos pasos:
    - Esperará 90 segundos para que la base de datos se inicialice.
    - Iniciará el backend y el frontend utilizando `docker-compose.app.yml`.
 
-3. Verifique que la aplicación se haya iniciado correctamente.
+3. Verifique que la aplicación se haya iniciado correctamente en la ruta http://localhost:3000/#/login.
+
+4. Para visualizar los datos en la base de datos, abra el programa MySQL WorkBench y cree una nueva conexión con los datos:
+   - Hostname: localhost
+   - Port: 3306
+   - Username: root
+   - Password: root1234
 
 ## Detener la Aplicación
 
 Para detener la aplicación, siga estos pasos:
 
-1. Navegue al directorio donde se encuentran los archivos `start_app.bat` y `stop_app.bat`.
+1. Ubiquese en la carpeta del proyecto, donde se encuentran los archivos `start_app.bat` y `stop_app.bat`.
 2. Haga doble clic en el archivo `stop_app.bat`.
 
    Este script realizará las siguientes acciones:
@@ -38,9 +44,3 @@ Para detener la aplicación, siga estos pasos:
    - Detendrá la base de datos.
 
 3. Verifique que todos los servicios se hayan detenido correctamente.
-
-## Notas Adicionales
-
-- Asegúrese de tener los permisos necesarios para ejecutar los scripts.
-- Si encuentra algún problema, verifique los logs de los contenedores para obtener más información.
-- En caso de un error de conexion en el servicio backend cierre los contenedores y restarte la aplicacion. 
